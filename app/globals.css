@@ -1,0 +1,158 @@
+@import 'tailwindcss';
+@import 'tw-animate-css';
+
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  /* Retro pixel color palette */
+  --pixel-red: #FF6B6B;
+  --pixel-yellow: #FFD93D;
+  --pixel-green: #6BCB77;
+  --pixel-blue: #4D96FF;
+  
+  --background: #FAFAF8;
+  --foreground: #1a1a1a;
+  --card: #ffffff;
+  --card-foreground: #1a1a1a;
+  --popover: #ffffff;
+  --popover-foreground: #1a1a1a;
+  --primary: #1a1a1a;
+  --primary-foreground: #FAFAF8;
+  --secondary: #f0f0ed;
+  --secondary-foreground: #1a1a1a;
+  --muted: #f5f5f2;
+  --muted-foreground: #666666;
+  --accent: #FF6B6B;
+  --accent-foreground: #ffffff;
+  --destructive: #FF6B6B;
+  --destructive-foreground: #ffffff;
+  --border: #e5e5e0;
+  --input: #e5e5e0;
+  --ring: #4D96FF;
+  --chart-1: #FF6B6B;
+  --chart-2: #FFD93D;
+  --chart-3: #6BCB77;
+  --chart-4: #4D96FF;
+  --chart-5: #FF8C42;
+  --radius: 0px;
+  --sidebar: #FAFAF8;
+  --sidebar-foreground: #1a1a1a;
+  --sidebar-primary: #1a1a1a;
+  --sidebar-primary-foreground: #FAFAF8;
+  --sidebar-accent: #f0f0ed;
+  --sidebar-accent-foreground: #1a1a1a;
+  --sidebar-border: #e5e5e0;
+  --sidebar-ring: #4D96FF;
+}
+
+.dark {
+  --background: #1a1a1a;
+  --foreground: #FAFAF8;
+  --card: #252525;
+  --card-foreground: #FAFAF8;
+  --popover: #252525;
+  --popover-foreground: #FAFAF8;
+  --primary: #FAFAF8;
+  --primary-foreground: #1a1a1a;
+  --secondary: #333333;
+  --secondary-foreground: #FAFAF8;
+  --muted: #333333;
+  --muted-foreground: #999999;
+  --accent: #FF6B6B;
+  --accent-foreground: #ffffff;
+  --destructive: #FF6B6B;
+  --destructive-foreground: #ffffff;
+  --border: #404040;
+  --input: #404040;
+  --ring: #4D96FF;
+  --chart-1: #FF6B6B;
+  --chart-2: #FFD93D;
+  --chart-3: #6BCB77;
+  --chart-4: #4D96FF;
+  --chart-5: #FF8C42;
+  --sidebar: #1a1a1a;
+  --sidebar-foreground: #FAFAF8;
+  --sidebar-primary: #4D96FF;
+  --sidebar-primary-foreground: #FAFAF8;
+  --sidebar-accent: #333333;
+  --sidebar-accent-foreground: #FAFAF8;
+  --sidebar-border: #404040;
+  --sidebar-ring: #4D96FF;
+}
+
+@theme inline {
+  --font-sans: var(--font-inter), 'Inter', sans-serif;
+  --font-mono: 'Press Start 2P', monospace;
+  --font-pixel: var(--font-pixel), 'Press Start 2P', monospace;
+  --color-pixel-red: var(--pixel-red);
+  --color-pixel-yellow: var(--pixel-yellow);
+  --color-pixel-green: var(--pixel-green);
+  --color-pixel-blue: var(--pixel-blue);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+@keyframes pixel-bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-4px);
+  }
+}
+
+.animate-bounce-slow {
+  animation: bounce-slow 3s ease-in-out infinite;
+}
+
+@keyframes bounce-slow {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
