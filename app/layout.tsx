@@ -17,24 +17,6 @@ const pressStart = Press_Start_2P({
 export const metadata: Metadata = {
   title: 'SodaSnacks - Digital Studio',
   description: 'Small digital studio specializing in web app development, admin systems, and custom business solutions.',
-  generator: 'v0.app',
-  icons: {
-    icon: [
-      {
-        url: '/icon-light-32x32.png',
-        media: '(prefers-color-scheme: light)',
-      },
-      {
-        url: '/icon-dark-32x32.png',
-        media: '(prefers-color-scheme: dark)',
-      },
-      {
-        url: '/icon.svg',
-        type: 'image/svg+xml',
-      },
-    ],
-    apple: '/apple-icon.png',
-  },
 }
 
 export default function RootLayout({
