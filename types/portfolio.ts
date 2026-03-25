@@ -4,7 +4,7 @@ export interface ProjectData {
     en: string
     zh: string
   }
-  client: {
+  subtitle?: {
     en: string
     zh: string
   }
@@ -12,14 +12,27 @@ export interface ProjectData {
     en: string
     zh: string
   }
-  features: {
+  highlights: {
     en: string[]
     zh: string[]
   }
   tech: string[]
-  image?: string
+  role?: {
+    en: string
+    zh: string
+  }
+  status?: {
+    en: string
+    zh: string
+  }
+  cta: {
+    en: string
+    zh: string
+  }
+  image: string
   link?: string
   accentColor: "red" | "yellow" | "green" | "blue"
+  featured?: boolean
 }
 
 export interface ServiceData {

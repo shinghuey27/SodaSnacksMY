@@ -176,6 +176,11 @@ interface HeroProps {
 export function Hero({ lang }: HeroProps) {
   const t = content[lang];
 
+  const pixelFontClass =
+    lang === "zh"
+      ? "font-[family-name:var(--font-chinese)]"
+      : "font-[family-name:var(--font-pixel)]";
+
   return (
     <section className="relative py-16 md:py-24 lg:py-32 overflow-hidden">
       {/* Floating pixel coding icons */}
@@ -228,10 +233,14 @@ export function Hero({ lang }: HeroProps) {
               </div>
             </div>
             {/* END */}
-            <h1 className="font-[family-name:var(--font-pixel)] text-lg md:text-2xl lg:text-3xl text-foreground mb-3 leading-relaxed text-balance">
+            <h1
+              className={`${pixelFontClass} text-lg md:text-2xl lg:text-3xl text-foreground mb-3 leading-relaxed text-balance`}
+            >
               {t.tagline}
             </h1>
-            <h2 className="font-[family-name:var(--font-pixel)] text-base md:text-xl lg:text-2xl text-pixel-red mb-6">
+            <h2
+              className={`${pixelFontClass} text-base md:text-xl lg:text-2xl text-pixel-red mb-6`}
+            >
               {t.subtitle}
             </h2>
 

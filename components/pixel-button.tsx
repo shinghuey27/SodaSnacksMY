@@ -25,9 +25,9 @@ export function PixelButton({
   const [isHovered, setIsHovered] = useState(false)
 
   const sizeConfig = {
-    sm: { px: 16, py: 8, fontSize: "9px", pixel: 2 },
-    md: { px: 24, py: 12, fontSize: "11px", pixel: 3 },
-    lg: { px: 32, py: 16, fontSize: "13px", pixel: 4 },
+    sm: { px: 16, py: 8, fontSize: "11px", pixel: 2 },
+    md: { px: 24, py: 12, fontSize: "13px", pixel: 3 },
+    lg: { px: 32, py: 16, fontSize: "15px", pixel: 4 },
   }
 
   const variantColors = {
@@ -98,7 +98,7 @@ export function PixelButton({
   )`
 
   const buttonStyle: React.CSSProperties = {
-    fontFamily: "var(--font-pixel)",
+    fontFamily: "var(--font-chinese)",
     fontSize: config.fontSize,
     padding: `${config.py}px ${config.px}px`,
     backgroundColor: isHovered ? colors.hoverBg : colors.bg,
