@@ -53,7 +53,7 @@ export function PixelCharacterDuo({
         className="relative bg-card border-2 border-foreground shadow-[2px_2px_0_0_rgba(58,58,56,0.8)] px-4 py-2.5 text-center"
         style={{ animation: "duo-bob 2.4s ease-in-out infinite" }}
       >
-        <p className="font-[family-name:var(--font-pixel)] text-[7px] leading-[1.9] text-foreground whitespace-pre-line">
+        <p className="font-chinese text-xs leading-[1.9] text-foreground whitespace-pre-line">
           {lines.map((line, i) => (
             <span key={i}>
               {line}

@@ -101,7 +101,7 @@ const content = {
     characterMessages: [
       "你好！\n给我们发\n消息吧 ✦",
       "我们一起\n创造\n酷东西！",
-      "今天就开始\n您的项目！",
+      "今天\n就开始\n您的项目！\n",
     ],
   },
 };
@@ -206,8 +206,8 @@ export function Contact({ lang }: ContactProps) {
   const t = content[lang];
   const pxFont =
     lang === "zh"
-      ? "font-[family-name:var(--font-chinese)]"
-      : "font-[family-name:var(--font-pixel)]";
+      ? "font-[family-name:var(--font-chinese)] text-base"
+      : "font-[family-name:var(--font-pixel)] text-[10px]";
   const vtFont = "font-[family-name:var(--font-chinese)]";
 
   const [name, setName] = useState("");
@@ -522,7 +522,7 @@ export function Contact({ lang }: ContactProps) {
             </form>
           ) : (
             <div
-              className={`${pxFont} text-[9px] p-4 bg-pixel-green text-white border-[3px] border-foreground text-center leading-[1.9]`}
+              className={`${pxFont} p-4 bg-pixel-green text-white border-[3px] border-foreground text-center leading-[1.9]`}
               style={{
                 boxShadow: "3px 3px 0 rgba(58,58,56,0.8)",
                 animation: "px-pop-in .3s cubic-bezier(.36,.07,.19,.97)",
@@ -589,7 +589,7 @@ export function Contact({ lang }: ContactProps) {
                   {/* text */}
                   <div className="flex-1 min-w-0">
                     <p
-                      className={`font-pixel text-[7px] text-muted-foreground mb-1`}
+                      className={`${pxFont} text-muted-foreground mb-1`}
                     >
                       {item.label}
                     </p>
