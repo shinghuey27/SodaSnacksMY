@@ -205,7 +205,7 @@ export function ServiceCard({ service, lang, index }: ServiceCardProps) {
           </ul>
 
           {/* tech tags */}
-          <div className="flex flex-wrap gap-2 md:gap-2.5 mt-auto pt-4 md:pt-5 border-t-4 border-dashed border-border">
+          {/* <div className="flex flex-wrap gap-2 md:gap-2.5 mt-auto pt-4 md:pt-5 border-t-4 border-dashed border-border">
             {tags.map((tag) => (
               <span
                 key={tag}
@@ -215,7 +215,7 @@ export function ServiceCard({ service, lang, index }: ServiceCardProps) {
                 {tag}
               </span>
             ))}
-          </div>
+          </div> */}
         </div>
 
         {/* bottom pixel strip */}

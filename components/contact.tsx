@@ -281,27 +281,27 @@ export function Contact({ lang }: ContactProps) {
         showToast("📋", "COPIED!", t.emailVal);
       },
     },
-    {
-      icon: "☎",
-      colorCls: "bg-pixel-yellow",
-      label: "PHONE",
-      value: t.phone,
-      href: `tel:${t.phone}`,
-      onClick: () => {
-        navigator.clipboard?.writeText(t.phone).catch(() => {});
-        showToast("📋", "COPIED!", t.phone);
-      },
-    },
     // {
-    //   // WhatsApp — green icon box, opens wa.me on click
-    //   iconEl: <WhatsAppIcon className="w-5 h-5 text-white" />,
-    //   colorCls: "bg-pixel-green",
-    //   label: "WHATSAPP",
-    //   value: t.whatsapp,
-    //   href: toWaLink(t.whatsapp),
-    //   badge: lang === "en" ? "TAP TO CHAT ▶" : "点击聊天 ▶",
-    //   onClick: undefined, // handled by href
+    //   icon: "☎",
+    //   colorCls: "bg-pixel-yellow",
+    //   label: "PHONE",
+    //   value: t.phone,
+    //   href: `tel:${t.phone}`,
+    //   onClick: () => {
+    //     navigator.clipboard?.writeText(t.phone).catch(() => {});
+    //     showToast("📋", "COPIED!", t.phone);
+    //   },
     // },
+    {
+      // WhatsApp — green icon box, opens wa.me on click
+      iconEl: <WhatsAppIcon className="w-5 h-5 text-white" />,
+      colorCls: "bg-pixel-green",
+      label: "WHATSAPP",
+      // value: t.whatsapp,
+      href: toWaLink(t.whatsapp),
+      badge: lang === "en" ? "TAP TO CHAT ▶" : "点击聊天 ▶",
+      onClick: undefined, // handled by href
+    },
     {
       icon: "⌂",
       colorCls: "bg-pixel-blue",
@@ -585,8 +585,8 @@ export function Contact({ lang }: ContactProps) {
                   <div
                     className={`w-9 h-9 shrink-0 ${item.colorCls} border-2 border-foreground flex items-center justify-center text-lg text-white`}
                   >
-                    {/* {item.iconEl ?? item.icon} */}
-                    {item.icon}
+                    {item.iconEl ?? item.icon}
+                    {/* {item.icon} */}
                   </div>
 
                   {/* text */}
@@ -596,21 +596,21 @@ export function Contact({ lang }: ContactProps) {
                     >
                       {item.label}
                     </p>
-                    <p
+                    {/* <p
                       className={`${vtFont} text-base text-foreground truncate`}
                     >
                       {item.value}
-                    </p>
+                    </p> */}
                   </div>
 
                   {/* WhatsApp badge */}
-                  {/* {isWhatsApp && (
+                  {isWhatsApp && (
                     <span
-                      className={`${pxFont} text-[7px] text-white bg-pixel-green border border-foreground px-1.5 py-0.5 shrink-0`}
+                      className={`${pxFont} text-white bg-pixel-green border border-foreground px-1.5 py-0.5 shrink-0`}
                     >
                       {item.badge}
                     </span>
-                  )} */}
+                  )}
                 </div>
               );
 

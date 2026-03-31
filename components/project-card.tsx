@@ -257,7 +257,7 @@ export function ProjectCard({
               )}
 
               {/* Tech stack with pixel badges */}
-              <div className="flex flex-wrap gap-2 md:gap-2.5 mt-auto pt-4 md:pt-5 border-t-4 border-dashed border-border">
+              {/* <div className="flex flex-wrap gap-2 md:gap-2.5 mt-auto pt-4 md:pt-5 border-t-4 border-dashed border-border">
                 {project.tech.map((tech, i) => (
                   <span
                     key={i}
@@ -269,7 +269,7 @@ export function ProjectCard({
                     {tech}
                   </span>
                 ))}
-              </div>
+              </div> */}
 
               {/* CTA Button - LARGER */}
               {/* <div className="mt-4 md:mt-5">
@@ -381,7 +381,7 @@ export function ProjectCard({
           )}
 
           {/* Tech badges */}
-          <div className="flex flex-wrap gap-1.5 md:gap-2 mt-auto pt-3 md:pt-4 border-t-2 border-dashed border-border">
+          {/* <div className="flex flex-wrap gap-1.5 md:gap-2 mt-auto pt-3 md:pt-4 border-t-2 border-dashed border-border">
             {project.tech.slice(0, 3).map((tech, i) => (
               <span
                 key={i}
@@ -393,7 +393,7 @@ export function ProjectCard({
                 {tech}
               </span>
             ))}
-          </div>
+          </div> */}
 
           {/* CTA */}
           {/* <div className="mt-3 md:mt-4">
