@@ -6,9 +6,9 @@ import { Header } from "@/components/header"
 import { Hero } from "@/components/hero"
 import { Portfolio } from "@/components/portfolio"
 import { Services } from "@/components/services"
-import { Contact } from "@/components/contact"
 import { Footer } from "@/components/footer"
 import { PixelDivider } from "@/components/pixel-divider"
+import { Contact } from "@/components/contact"
 
 export default function Home() {
   const [lang, setLang] = useState<Language>("en")

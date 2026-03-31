@@ -7,8 +7,8 @@ import { PixelIcon, PixelIconType } from "./pixel-icon";
 
 const content = {
   en: {
-    tagline: "We Build Digital Solutions",
-    subtitle: "That Actually Work",
+    tagline: "Fresh Ideas. Tasty Solutions.",
+    subtitle: "Creative like Soda, Sharp like Snacks.",
     description:
       "A small digital studio crafting custom web apps, admin systems, and business tools with a playful pixel twist.",
     cta: "Contact Us",
