@@ -2,34 +2,36 @@ import { ProjectData } from "@/types/portfolio"
 
 export const projects: ProjectData[] = [
   {
-    id: "dinoo-island",
+    id: "claw-warehouse-crm",
     title: {
-      en: "Dinoo Island",
-      zh: "恐龙岛",
+      en: "Inventory Management CRM",
+      zh: "娃娃仓库 & 客户管理系统",
     },
     subtitle: {
-      en: "Interactive Web Experience",
-      zh: "互动网页体验",
+      en: "Web App for Stock, Points & Customer Management",
+      zh: "库存、积分与客户管理网页应用",
     },
     description: {
-      en: "An interactive, pixel-inspired web experience crafted to showcase playful UI, smooth animations, and engaging user interactions.",
-      zh: "一个以像素风格为灵感的互动网页体验，展示有趣的UI、流畅的动画和引人入胜的用户互动。",
+      en: "A web application for managing a real-life claw machine store, including stock tracking, customer management, and points system, with an interactive, user-friendly interface.",
+      zh: "为真实娃娃机店打造的网页应用，涵盖库存管理、客户关系管理及积分系统，界面互动且易于使用。",
     },
     highlights: {
       en: [
-        "Interactive UI with micro-animations",
-        "Distinct pixel-style visual identity",
-        "Designed for user engagement and delight",
+        "Real-time inventory stock tracking",
+        "Integrated CRM for managing customer data",
+        "Points system for tracking customer scores",
+        "Interactive and user-friendly web interface",
       ],
       zh: [
-        "带有微动画的互动UI",
-        "独特的像素风格视觉标识",
-        "专为用户参与和愉悦设计",
+        "多台娃娃机的实时库存追踪",
+        "整合客户关系管理功能",
+        "客户积分系统，方便管理存分",
+        "互动且易用的网页界面",
       ],
     },
     tech: ["React", "Next.js", "Tailwind CSS"],
     cta: {
-      en: "Explore Project",
+      en: "Reach out for details",
       zh: "探索项目",
     },
     image: "/images/project-dinoo.png",

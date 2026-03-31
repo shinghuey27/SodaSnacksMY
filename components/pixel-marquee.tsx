@@ -2,6 +2,7 @@
 
 interface PixelMarqueeProps {
   items?: string[]
+  lang?:any
 }
 
 const defaultItems = [
@@ -13,10 +14,14 @@ const defaultItems = [
   "PIXEL PERFECT",
 ]
 
-export function PixelMarquee({ items = defaultItems }: PixelMarqueeProps) {
+export function PixelMarquee({ items = defaultItems, lang }: PixelMarqueeProps) {
   // Duplicate for seamless loop
   const repeated = [...items, ...items]
-
+  console.log(lang,'yo')
+  const pxFont =
+    lang === "zh"
+      ? "font-[family-name:var(--font-chinese)] text-xs"
+      : "font-[family-name:var(--font-pixel)] text-[9px]";
   return (
     <div className="overflow-hidden border-y-[3px] border-foreground bg-foreground py-1">
       <div
@@ -26,11 +31,11 @@ export function PixelMarquee({ items = defaultItems }: PixelMarqueeProps) {
         {repeated.map((item, i) => (
           <span key={i} className="flex items-center">
             <span
-              className="font-[family-name:var(--font-pixel)] text-[9px] text-background px-4 whitespace-nowrap opacity-85 tracking-wide"
+              className={`${pxFont} text-background px-4 whitespace-nowrap opacity-85 tracking-wide`}
             >
               {item}
             </span>
-            <span className="text-pixel-yellow font-[family-name:var(--font-pixel)] text-[9px] px-1">
+            <span className={`${pxFont} text-pixel-yellow font-[family-name:var(--font-pixel)] text-[9px] px-1`}>
               ★
             </span>
           </span>

@@ -155,7 +155,7 @@ export function ProjectCard({
               <div
                 className="relative w-full h-full overflow-hidden"
                 style={{
-                  paddingBottom:"75%",
+                  paddingBottom: "75%",
                   border: "3px solid var(--foreground)",
                   boxShadow:
                     "inset 3px 3px 0 rgba(0,0,0,0.1), 3px 3px 0 rgba(0,0,0,0.15)",
@@ -214,7 +214,7 @@ export function ProjectCard({
             <div className="lg:col-span-3 p-4 md:p-6 flex flex-col bg-card">
               {subtitle && (
                 <span
-                  className={`${pixelFontClass} text-xs md:text-sm text-muted-foreground mb-2 tracking-wide`}
+                  className={`${pixelFontClass}  text-muted-foreground mb-2 tracking-wide ${lang === "zh" ? "text-base" : "text-xs"}`}
                 >
                   {subtitle}
                 </span>
@@ -222,7 +222,7 @@ export function ProjectCard({
 
               {/* LARGER title text */}
               <h3
-                className={`${pixelFontClass} text-base md:text-lg lg:text-xl text-foreground mb-3 md:mb-4 leading-relaxed`}
+                className={`${pixelFontClass} text-foreground mb-3 md:mb-4 leading-relaxed ${lang === "zh" ? "text-xl" : "text-md"}`}
               >
                 {title}
               </h3>
@@ -272,7 +272,7 @@ export function ProjectCard({
               </div>
 
               {/* CTA Button - LARGER */}
-              <div className="mt-4 md:mt-5">
+              {/* <div className="mt-4 md:mt-5">
                 <button
                   className={`${pixelFontClass} text-sm md:text-base px-4 md:px-5 py-2 cursor-pointer transition-all hover:translate-x-1`}
                   style={{
@@ -282,7 +282,7 @@ export function ProjectCard({
                 >
                   {">>>"} {cta}
                 </button>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>
@@ -311,7 +311,7 @@ export function ProjectCard({
             <span
               className={`${pixelFontClass} text-[10px] md:text-xs text-white ml-1 truncate tracking-wide drop-shadow-[1px_1px_0_rgba(0,0,0,0.3)]`}
             >
-            {subtitle}
+              {subtitle}
             </span>
           )}
         </div>
@@ -352,7 +352,7 @@ export function ProjectCard({
             {title}
           </h3>
 
-          <p className="text-sm text-muted-foreground leading-relaxed mb-3 md:mb-4 line-clamp-2">
+          <p className="text-sm text-muted-foreground leading-relaxed mb-3 md:mb-4 ">
             {description}
           </p>
 
@@ -367,7 +367,7 @@ export function ProjectCard({
                     boxShadow: "1px 1px 0 rgba(0,0,0,0.2)",
                   }}
                 />
-                <span className="text-sm text-muted-foreground line-clamp-1">
+                <span className="text-sm text-muted-foreground">
                   {highlight}
                 </span>
               </div>
@@ -396,14 +396,14 @@ export function ProjectCard({
           </div>
 
           {/* CTA */}
-          <div className="mt-3 md:mt-4">
+          {/* <div className="mt-3 md:mt-4">
             <span
               className={`${pixelFontClass} text-[10px] md:text-xs cursor-pointer hover:translate-x-0.5 inline-block transition-transform`}
               style={{ color: `var(--pixel-${project.accentColor})` }}
             >
               {">"} {cta}
             </span>
-          </div>
+          </div> */}
         </div>
       </div>
     </PixelBorder>

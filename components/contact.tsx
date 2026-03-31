@@ -209,7 +209,10 @@ export function Contact({ lang }: ContactProps) {
       ? "font-[family-name:var(--font-chinese)] text-base"
       : "font-[family-name:var(--font-pixel)] text-[10px]";
   const vtFont = "font-[family-name:var(--font-chinese)]";
-
+  const pxFontTitle =
+    lang === "zh"
+      ? "font-[family-name:var(--font-chinese)] text-xl"
+      : "font-[family-name:var(--font-pixel)]";
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [topic, setTopic] = useState("");
@@ -360,7 +363,7 @@ export function Contact({ lang }: ContactProps) {
       {/* ── Header ── */}
       <div className="text-center mb-10 relative z-10">
         <h2
-          className={`${pxFont} text-xl md:text-2xl leading-relaxed text-foreground`}
+          className={`${pxFontTitle} leading-relaxed text-foreground`}
         >
           {t.title}{" "}
           <span
@@ -374,7 +377,7 @@ export function Contact({ lang }: ContactProps) {
 
       {/* ── Marquee ── */}
       <div className="max-w-4xl mx-auto mb-10 relative z-10">
-        <PixelMarquee items={t.marqueeItems} />
+        <PixelMarquee items={t.marqueeItems} lang={lang} />
       </div>
 
       {/* ── Grid ── */}

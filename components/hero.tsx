@@ -10,14 +10,14 @@ const content = {
     tagline: "Fresh Ideas. Tasty Solutions.",
     subtitle: "Creative like Soda, Sharp like Snacks.",
     description:
-      "A small digital studio crafting custom web apps, admin systems, and business tools with a playful pixel twist.",
+      "Custom web apps, admin systems, and business tools—precision in every pixel, tailored for your business.",
     cta: "Contact Us",
   },
   zh: {
-    tagline: "我们构建数字解决方案",
-    subtitle: "真正有效的方案",
+    tagline: "新鲜创意，美味方案。",
+    subtitle: "趣味如汽水，锋利似零食",
     description:
-      "一个小型数字工作室，以俏皮的像素风格打造定制网页应用、管理系统和商业工具。",
+      "打造专属网页应用、后台系统和商业工具——每一像素精心雕琢，为你的业务量身定制。",
     cta: "联系我们",
   },
 };
