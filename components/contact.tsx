@@ -42,7 +42,7 @@ const content = {
     emailVal: "iwantsodasnacks@gmail.com",
     phone: "+60 11-3765 2814",
     whatsapp: "+60 11-3765 2814",
-    address: "Kuala Lumpur",
+    address: "Kuala Lumpur, Malaysia",
     hours: "Mon–Fri  09:00–18:00",
     rateLabel: "RESPONSE RATE",
     rateVal: "82 / 100",
@@ -362,9 +362,7 @@ export function Contact({ lang }: ContactProps) {
 
       {/* ── Header ── */}
       <div className="text-center mb-10 relative z-10">
-        <h2
-          className={`${pxFontTitle} leading-relaxed text-foreground`}
-        >
+        <h2 className={`${pxFontTitle} leading-relaxed text-foreground`}>
           {t.title}{" "}
           <span
             className="text-pixel-red inline-block"
@@ -591,16 +589,16 @@ export function Contact({ lang }: ContactProps) {
 
                   {/* text */}
                   <div className="flex-1 min-w-0">
-                    <p
-                      className={`${pxFont} text-muted-foreground mb-1`}
-                    >
+                    <p className={`${pxFont} text-muted-foreground mb-1`}>
                       {item.label}
                     </p>
-                    {/* <p
-                      className={`${vtFont} text-base text-foreground truncate`}
-                    >
-                      {item.value}
-                    </p> */}
+                    {!isWhatsApp && (
+                      <p
+                        className={`${vtFont} text-base text-foreground truncate`}
+                      >
+                        {item.value}
+                      </p>
+                    )}
                   </div>
 
                   {/* WhatsApp badge */}

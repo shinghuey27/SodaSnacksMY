@@ -135,7 +135,7 @@ export function ProjectCard({
             </div>
             <div className="w-px h-4 md:h-5 bg-white/30" />
             <span
-              className={`${pixelFontClass} text-xs md:text-sm lg:text-base text-white tracking-wider drop-shadow-[2px_2px_0_rgba(0,0,0,0.3)]`}
+              className={`${pixelFontClass} text-white tracking-wider drop-shadow-[2px_2px_0_rgba(0,0,0,0.3)] ${lang === 'zh' ? 'text-2xl ' : 'text-sm ]'}`}
             >
               {lang === "zh" ? "精选项目" : "FEATURED PROJECT"}
             </span>
@@ -309,7 +309,7 @@ export function ProjectCard({
           </div>
           {subtitle && (
             <span
-              className={`${pixelFontClass} text-[10px] md:text-xs text-white ml-1 truncate tracking-wide drop-shadow-[1px_1px_0_rgba(0,0,0,0.3)]`}
+              className={`${pixelFontClass}  text-white ml-1 truncate tracking-wide drop-shadow-[1px_1px_0_rgba(0,0,0,0.3)] ${lang === 'zh' ? 'text-md md:text-[md]' : 'text-xs md:text-[8px]'}`}
             >
               {subtitle}
             </span>
