@@ -190,9 +190,13 @@ function FloatingSprites() {
 }
 
 /* ── helper: strip non-digits for wa.me link ── */
-function toWaLink(phone: string) {
+function toWaLink(phone: string, text?: string) {
   const digits = phone.replace(/\D/g, "");
-  return `https://wa.me/${digits}`;
+  const base = `https://wa.me/${digits}`;
+
+  if (!text) return base;
+
+  return `${base}?text=${encodeURIComponent(text)}`;
 }
 
 /* ══════════════════════════════════════
@@ -298,8 +302,8 @@ export function Contact({ lang }: ContactProps) {
       colorCls: "bg-pixel-green",
       label: "WHATSAPP",
       // value: t.whatsapp,
-      href: toWaLink(t.whatsapp),
-      badge: lang === "en" ? "TAP TO CHAT ▶" : "点击聊天 ▶",
+      href: toWaLink(t.whatsapp, "Hi! I'm interested in your services "),
+      badge: lang === "en" ? "CHAT ▶" : "点击聊天 ▶",
       onClick: undefined, // handled by href
     },
     {
