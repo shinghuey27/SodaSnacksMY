@@ -37,6 +37,7 @@ export const projects: ProjectData[] = [
     image: "/images/project-dinoo.png",
     accentColor: "green",
     featured: true,
+    badge: "live",
   },
   {
     id: "insurance-admin",
@@ -75,6 +76,7 @@ export const projects: ProjectData[] = [
     },
     image: "/images/project-insurance.jpg",
     accentColor: "blue",
+    badge: "live",
   },
   {
     id: "grocery-app",
@@ -113,6 +115,7 @@ export const projects: ProjectData[] = [
     },
     image: "/images/project-grocery.png",
     accentColor: "yellow",
+    badge: "paused",
   },
   {
     id: "erpnext-custom",
@@ -152,5 +155,6 @@ export const projects: ProjectData[] = [
     },
     image: "/images/project-erpnext.jpg",
     accentColor: "red",
+    badge: "live",
   },
 ]

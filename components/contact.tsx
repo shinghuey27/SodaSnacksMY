@@ -5,6 +5,7 @@ import { Language } from "@/types/portfolio";
 import { PixelMarquee } from "./pixel-marquee";
 import { PixelCharacterDuo } from "./pixel-character";
 import { PixelAchievementToast } from "./pixel-achievement-toast";
+import { FloatingSnacks } from "./floating-snacks";
 
 /* ── types ── */
 interface ToastData {
@@ -145,50 +146,6 @@ function CardCorners() {
   );
 }
 
-/* ── floating background sprites ── */
-const SPRITES = ["★", "♥", "◆", "▲", "●", "✦"];
-const SPRITE_COLORS = [
-  "#f4c430",
-  "#e63946",
-  "#3a86ff",
-  "#4caf50",
-  "#9b5de5",
-  "#ff6b35",
-];
-
-function FloatingSprites() {
-  const items = Array.from({ length: 18 }, (_, i) => ({
-    emoji: SPRITES[i % SPRITES.length],
-    color: SPRITE_COLORS[i % SPRITE_COLORS.length],
-    left: `${(i * 5.5) % 100}%`,
-    top: `${(i * 7.3) % 100}%`,
-    size: 10 + (i % 5) * 2.5,
-    dur: 3 + (i % 4) * 1.5,
-    delay: -(i % 5) * 1.2,
-    opacity: 0.25 + (i % 4) * 0.08,
-  }));
-  return (
-    <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
-      {items.map((s, i) => (
-        <div
-          key={i}
-          className="absolute select-none"
-          style={{
-            left: s.left,
-            top: s.top,
-            color: s.color,
-            fontSize: s.size,
-            opacity: s.opacity,
-            animation: `px-float ${s.dur}s linear ${s.delay}s infinite`,
-          }}
-        >
-          {s.emoji}
-        </div>
-      ))}
-    </div>
-  );
-}
-
 /* ── helper: strip non-digits for wa.me link ── */
 function toWaLink(phone: string, text?: string) {
   const digits = phone.replace(/\D/g, "");
@@ -320,13 +277,6 @@ export function Contact({ lang }: ContactProps) {
     <section id="contact" className="relative py-10 px-5 overflow-hidden">
       {/* keyframes */}
       <style>{`
-        @keyframes px-float {
-          0%   { transform:translateY(0px)   rotate(0deg); }
-          25%  { transform:translateY(-14px) rotate(90deg); }
-          50%  { transform:translateY(0px)   rotate(180deg); }
-          75%  { transform:translateY(14px)  rotate(270deg); }
-          100% { transform:translateY(0px)   rotate(360deg); }
-        }
         @keyframes px-block-bounce { from{transform:translateY(0)} to{transform:translateY(-8px)} }
         @keyframes px-blink        { 0%,100%{opacity:1} 50%{opacity:0} }
         @keyframes px-bar-pulse    { 0%,100%{filter:brightness(1)} 50%{filter:brightness(1.15)} }
@@ -345,7 +295,7 @@ export function Contact({ lang }: ContactProps) {
         }
       `}</style>
 
-      <FloatingSprites />
+      <FloatingSnacks variant="contact" />
       <div
         className="absolute inset-0 opacity-[0.03] pointer-events-none"
         style={{

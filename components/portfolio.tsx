@@ -1,19 +1,24 @@
 "use client";
 
-import { Language } from "@/types/portfolio";
+import { useEffect, useState } from "react";
+import Image from "next/image";
+import useEmblaCarousel from "embla-carousel-react";
+import { Language, ProjectData } from "@/types/portfolio";
 import { projects } from "@/data/projects";
 import { ProjectCard } from "./project-card";
+import { PixelSprite } from "./pixel-sprite";
+import { MASCOT_S } from "./sprites/mascot-data";
 
 const content = {
   en: {
     title: "Featured Work",
     subtitle: "Projects we've crafted with passion",
-    viewAll: "View All Projects",
+    insert: "▲ SELECT A CARTRIDGE",
   },
   zh: {
     title: "精选项目",
     subtitle: "我们用心打造的项目",
-    viewAll: "查看所有项目",
+    insert: "▲ 选择卡带切换项目",
   },
 };
 
@@ -24,7 +29,12 @@ interface PortfolioProps {
 export function Portfolio({ lang }: PortfolioProps) {
   const t = content[lang];
   const featuredProject = projects.find((p) => p.featured) || projects[0];
-  const otherProjects = projects.filter((p) => p.id !== featuredProject.id);
+  const ordered = [
+    featuredProject,
+    ...projects.filter((p) => p.id !== featuredProject.id),
+  ];
+  const [selectedId, setSelectedId] = useState(featuredProject.id);
+  const selected = ordered.find((p) => p.id === selectedId) ?? featuredProject;
 
   // Use Chinese pixel font for Chinese text
   const pixelFontClass =
@@ -59,112 +69,62 @@ export function Portfolio({ lang }: PortfolioProps) {
       />
 
       <div className="container mx-auto px-4 relative">
-        {/* Section header with pixel decoration */}
+        {/* Section header */}
         <div className="text-center mb-16">
-          {/* Pixel art decoration - game controller style */}
-          {/* <div className="flex justify-center items-center gap-3 mb-6">
-            <div className="flex flex-col gap-1">
-              <div className="flex gap-1">
-                <div
-                  className="w-3 h-3 bg-pixel-red"
-                  style={{ boxShadow: "1px 1px 0 rgba(0,0,0,0.2)" }}
-                />
-                <div
-                  className="w-3 h-3 bg-pixel-yellow"
-                  style={{ boxShadow: "1px 1px 0 rgba(0,0,0,0.2)" }}
-                />
-              </div>
-              <div className="flex gap-1">
-                <div
-                  className="w-3 h-3 bg-pixel-green"
-                  style={{ boxShadow: "1px 1px 0 rgba(0,0,0,0.2)" }}
-                />
-                <div
-                  className="w-3 h-3 bg-pixel-blue"
-                  style={{ boxShadow: "1px 1px 0 rgba(0,0,0,0.2)" }}
-                />
-              </div>
+          <div className="relative inline-block">
+            <h2
+              className={`${pixelFontClass} text-lg md:text-2xl text-foreground mb-4`}
+            >
+              {t.title}
+            </h2>
+            {/* S peeking beside the title */}
+            <div className="absolute -right-10 md:-right-14 -top-3 pointer-events-none">
+              <PixelSprite
+                sprite={MASCOT_S}
+                anim="idle"
+                fps={2}
+                flipX
+                className="w-7 md:w-9 h-auto drop-shadow-[2px_2px_0_rgba(58,58,56,0.2)]"
+              />
             </div>
-            <div className="flex items-center gap-1">
-              <div className="w-2 h-2 bg-foreground/30" />
-              <div className="w-8 h-1 bg-foreground/20" />
-              <div className="w-2 h-2 bg-foreground/30" />
-            </div>
-            <div
-              className="w-4 h-4 bg-pixel-red rotate-45"
-              style={{ boxShadow: "2px 2px 0 rgba(0,0,0,0.2)" }}
-            />
-            <div className="flex items-center gap-1">
-              <div className="w-2 h-2 bg-foreground/30" />
-              <div className="w-8 h-1 bg-foreground/20" />
-              <div className="w-2 h-2 bg-foreground/30" />
-            </div>
-            <div className="flex flex-col gap-1">
-              <div className="flex gap-1">
-                <div
-                  className="w-3 h-3 bg-pixel-yellow"
-                  style={{ boxShadow: "1px 1px 0 rgba(0,0,0,0.2)" }}
-                />
-                <div
-                  className="w-3 h-3 bg-pixel-red"
-                  style={{ boxShadow: "1px 1px 0 rgba(0,0,0,0.2)" }}
-                />
-              </div>
-              <div className="flex gap-1">
-                <div
-                  className="w-3 h-3 bg-pixel-blue"
-                  style={{ boxShadow: "1px 1px 0 rgba(0,0,0,0.2)" }}
-                />
-                <div
-                  className="w-3 h-3 bg-pixel-green"
-                  style={{ boxShadow: "1px 1px 0 rgba(0,0,0,0.2)" }}
-                />
-              </div>
-            </div>
-          </div> */}
-
-          <h2
-            className={`${pixelFontClass} text-lg md:text-2xl text-foreground mb-4`}
-          >
-            {t.title}
-          </h2>
+          </div>
           <p className="text-muted-foreground text-sm md:text-base">
             {t.subtitle}
           </p>
         </div>
 
-        {/* Featured project */}
-        <div className="max-w-5xl mx-auto mb-16">
-          <ProjectCard project={featuredProject} lang={lang} featured />
-        </div>
+        {/* ── Desktop: featured window + cartridge selector ── */}
+        <div className="hidden md:block max-w-5xl mx-auto">
+          <div
+            key={selected.id}
+            style={{ animation: "px-cartridge-in 0.3s ease-out" }}
+          >
+            <ProjectCard project={selected} lang={lang} featured />
+          </div>
 
-        {/* Other projects grid */}
-        {otherProjects.length > 0 && (
-          <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-            {otherProjects.map((project) => (
-              <ProjectCard key={project.id} project={project} lang={lang} />
+          <p
+            className={`${pixelFontClass} text-center text-muted-foreground mt-10 mb-4 ${lang === "zh" ? "text-sm" : "text-[9px]"}`}
+          >
+            {t.insert}
+          </p>
+
+          <div className="grid grid-cols-4 gap-4 lg:gap-6">
+            {ordered.map((project) => (
+              <Cartridge
+                key={project.id}
+                project={project}
+                lang={lang}
+                active={project.id === selectedId}
+                onSelect={() => setSelectedId(project.id)}
+              />
             ))}
           </div>
-        )}
+        </div>
 
-        {/* Bottom decoration - pixel game bar */}
-        {/* <div className="flex justify-center mt-16 gap-1">
-          {[...Array(15)].map((_, i) => (
-            <div 
-              key={i}
-              className="w-4 h-4"
-              style={{ 
-                backgroundColor: i % 4 === 0 ? "var(--pixel-red)" 
-                  : i % 4 === 1 ? "var(--pixel-yellow)"
-                  : i % 4 === 2 ? "var(--pixel-green)"
-                  : "var(--pixel-blue)",
-                opacity: 0.3 + (Math.sin(i * 0.5) * 0.3),
-                boxShadow: "1px 1px 0 rgba(0,0,0,0.1)",
-              }}
-            />
-          ))}
-        </div> */}
+        {/* ── Mobile: swipeable carousel ── */}
+        <MobileCarousel projects={ordered} lang={lang} />
       </div>
+
       <div
         className="absolute bottom-0 left-0 right-0 h-32 pointer-events-none"
         style={{
@@ -173,5 +133,128 @@ export function Portfolio({ lang }: PortfolioProps) {
         }}
       />
     </section>
+  );
+}
+
+/* ── game-cartridge thumbnail button ── */
+function Cartridge({
+  project,
+  lang,
+  active,
+  onSelect,
+}: {
+  project: ProjectData;
+  lang: Language;
+  active: boolean;
+  onSelect: () => void;
+}) {
+  const title = project.title[lang];
+  const accent = `var(--pixel-${project.accentColor})`;
+  const pixelFontClass =
+    lang === "zh"
+      ? "font-[family-name:var(--font-chinese)] text-sm"
+      : "font-[family-name:var(--font-pixel)] text-[8px]";
+
+  return (
+    <button
+      type="button"
+      onClick={onSelect}
+      aria-pressed={active}
+      className={`group text-left cursor-pointer border-[3px] border-foreground bg-card transition-transform duration-150 ${
+        active ? "-translate-y-1.5" : "hover:-translate-y-1 opacity-85 hover:opacity-100"
+      }`}
+      style={{
+        boxShadow: active
+          ? `4px 4px 0 ${accent}`
+          : "3px 3px 0 rgba(58,58,56,0.5)",
+      }}
+    >
+      {/* cartridge top strip */}
+      <div
+        className="h-2.5 flex items-center gap-1 px-1.5"
+        style={{ backgroundColor: accent }}
+      >
+        <div className="w-1 h-1 bg-white/80" />
+        <div className="w-1 h-1 bg-white/50" />
+      </div>
+
+      <div className="relative overflow-hidden" style={{ paddingBottom: "52%" }}>
+        <Image
+          src={project.image}
+          alt={title}
+          fill
+          sizes="(max-width: 1024px) 25vw, 240px"
+          className="object-cover"
+        />
+        {!active && (
+          <div className="absolute inset-0 bg-foreground/15 group-hover:bg-transparent transition-colors" />
+        )}
+      </div>
+
+      <div className="px-2 py-2 flex items-center gap-1.5">
+        <span
+          className={`${pixelFontClass} leading-snug ${active ? "text-foreground" : "text-muted-foreground"} line-clamp-2`}
+        >
+          {active ? "▶ " : ""}
+          {title}
+        </span>
+      </div>
+    </button>
+  );
+}
+
+/* ── mobile swipe carousel ── */
+function MobileCarousel({
+  projects: items,
+  lang,
+}: {
+  projects: ProjectData[];
+  lang: Language;
+}) {
+  const [emblaRef, emblaApi] = useEmblaCarousel({ align: "center" });
+  const [slideIdx, setSlideIdx] = useState(0);
+
+  useEffect(() => {
+    if (!emblaApi) return;
+    const onSelect = () => setSlideIdx(emblaApi.selectedScrollSnap());
+    emblaApi.on("select", onSelect);
+    return () => {
+      emblaApi.off("select", onSelect);
+    };
+  }, [emblaApi]);
+
+  return (
+    <div className="md:hidden">
+      <div ref={emblaRef} className="overflow-hidden">
+        <div className="flex touch-pan-y">
+          {items.map((project) => (
+            <div
+              key={project.id}
+              className="min-w-0 flex-[0_0_86%] pl-4 first:pl-2"
+            >
+              <div className="h-full pb-2 pr-2">
+                <ProjectCard project={project} lang={lang} />
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* pixel dots */}
+      <div className="flex justify-center gap-2.5 mt-6">
+        {items.map((p, i) => (
+          <button
+            key={p.id}
+            type="button"
+            aria-label={`slide ${i + 1}`}
+            onClick={() => emblaApi?.scrollTo(i)}
+            className={`w-3 h-3 border-2 border-foreground transition-colors ${
+              i === slideIdx ? "bg-pixel-red" : "bg-card"
+            }`}
+            style={{ boxShadow: "1px 1px 0 rgba(58,58,56,0.4)" }}
+          />
+        ))}
+      </div>
+    </div>
   );
 }

@@ -36,6 +36,62 @@ const tagMap: Record<string, string[]> = {
   "bg-pixel-yellow": ["ERPNext", "Python", "Frappe", "Admin UI"],
 };
 
+// RPG-style stat bars per service (value out of 10)
+const statMap: Record<
+  string,
+  { label: { en: string; zh: string }; value: number }[]
+> = {
+  "bg-pixel-blue": [
+    { label: { en: "SPEED", zh: "速度" }, value: 9 },
+    { label: { en: "SCALE", zh: "扩展" }, value: 8 },
+  ],
+  "bg-pixel-green": [
+    { label: { en: "SMOOTH", zh: "流畅" }, value: 9 },
+    { label: { en: "REACH", zh: "覆盖" }, value: 8 },
+  ],
+  "bg-pixel-yellow": [
+    { label: { en: "POWER", zh: "火力" }, value: 9 },
+    { label: { en: "FLEX", zh: "灵活" }, value: 10 },
+  ],
+};
+
+function StatBar({
+  label,
+  value,
+  color,
+  lang,
+}: {
+  label: { en: string; zh: string };
+  value: number;
+  color: string;
+  lang: Language;
+}) {
+  const pxFont =
+    lang === "zh"
+      ? "font-[family-name:var(--font-chinese)] text-[11px]"
+      : "font-[family-name:var(--font-pixel)] text-[7px]";
+  return (
+    <div className="flex items-center gap-2">
+      <span className={`${pxFont} text-muted-foreground w-14 flex-shrink-0`}>
+        {label[lang]}
+      </span>
+      <div className="flex gap-[3px] flex-1">
+        {Array.from({ length: 10 }, (_, i) => (
+          <div
+            key={i}
+            className="h-2 flex-1"
+            style={{
+              backgroundColor: color,
+              opacity: i < value ? 1 : 0.15,
+              boxShadow: i < value ? "1px 1px 0 rgba(0,0,0,0.15)" : "none",
+            }}
+          />
+        ))}
+      </div>
+    </div>
+  );
+}
+
 // 新增：3个纯像素风格内联图标（不再依赖 PixelIcon）
 const getServiceIcon = (color: string, className: string = "w-6 h-6") => {
   const iconClass = `${className} text-white`;
@@ -179,6 +235,19 @@ export function ServiceCard({ service, lang, index }: ServiceCardProps) {
           <p className="text-sm text-muted-foreground leading-relaxed">
             {desc}
           </p>
+
+          {/* RPG stat bars */}
+          {/* <div className="flex flex-col gap-2">
+            {(statMap[service.color] ?? []).map((stat) => (
+              <StatBar
+                key={stat.label.en}
+                label={stat.label}
+                value={stat.value}
+                color={borderColor}
+                lang={lang}
+              />
+            ))}
+          </div> */}
 
           {/* divider */}
           <div

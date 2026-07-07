@@ -209,3 +209,97 @@
 .animate-neon-pulse {
   animation: neon-pulse 4s ease-in-out infinite;
 }
+
+/* ── Floating snacks / mascots / bursts ── */
+
+/* slow organic wander for floating snacks (pairs with bounce via wrapper) */
+@keyframes px-drift {
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  25% {
+    transform: translate(4px, -8px);
+  }
+  50% {
+    transform: translate(-3px, -12px);
+  }
+  75% {
+    transform: translate(-6px, -5px);
+  }
+}
+
+/* particle flying out from a popped snack; --dx/--dy set inline */
+@keyframes px-burst {
+  0% {
+    transform: translate(0, 0) scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(var(--dx, 20px), var(--dy, -20px)) scale(0);
+    opacity: 0;
+  }
+}
+
+/* the popped snack itself */
+@keyframes px-pop-out {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1.6);
+    opacity: 0;
+  }
+}
+
+/* featured-project window swap when a cartridge is selected */
+@keyframes px-cartridge-in {
+  0% {
+    transform: scale(0.97);
+    opacity: 0.4;
+  }
+  60% {
+    transform: scale(1.01);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* quick hop for a clicked mascot */
+@keyframes px-jump {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-14px);
+  }
+}
+
+/* heart rising from a clicked mascot */
+@keyframes px-heart-rise {
+  0% {
+    transform: translateY(0) scale(0.6);
+    opacity: 0;
+  }
+  20% {
+    transform: translateY(-8px) scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-36px) scale(1);
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-bounce-slow,
+  .animate-float-slow,
+  .animate-neon-pulse,
+  [data-px-anim] {
+    animation: none !important;
+  }
+}

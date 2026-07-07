@@ -3,7 +3,8 @@
 import Image from "next/image";
 import { Language } from "@/types/portfolio";
 import { PixelButton } from "./pixel-button";
-import { PixelIcon, PixelIconType } from "./pixel-icon";
+import { FloatingSnacks } from "./floating-snacks";
+import { Mascots } from "./mascots";
 
 const content = {
   en: {
@@ -22,152 +23,6 @@ const content = {
   },
 };
 
-// Floating pixel icons configuration
-const floatingIcons: {
-  type: PixelIconType;
-  color: string;
-  top?: string;
-  left?: string;
-  right?: string;
-  delay: string;
-  size: string;
-}[] = [
-  // Left side - balanced
-  {
-    type: "monitor",
-    color: "#C8E0FF",
-    top: "12%",
-    left: "7%",
-    delay: "0s",
-    size: "w-8 h-8 sm:w-9 sm:h-9 md:w-12 md:h-12",
-  },
-  {
-    type: "code",
-    color: "#FFCCCC",
-    top: "26%",
-    left: "6%",
-    delay: "0.4s",
-    size: "w-7 h-7 sm:w-8 sm:h-8 md:w-10 md:h-10",
-  },
-  {
-    type: "keyboard",
-    color: "#FFF9C8",
-    top: "48%",
-    left: "9%",
-    delay: "1.1s",
-    size: "w-7 h-7 sm:w-8 sm:h-8 md:w-11 md:h-11",
-  },
-  {
-    type: "laptop",
-    color: "#C8F0D0",
-    top: "68%",
-    left: "8%",
-    delay: "2.0s",
-    size: "w-8 h-8 sm:w-9 sm:h-9 md:w-11 md:h-11",
-  },
-
-  // Center area (carefully placed to avoid text)
-  {
-    type: "terminal",
-    color: "#C8F0D0",
-    top: "18%",
-    left: "38%",
-    delay: "0.3s",
-    size: "w-6 h-6 sm:w-7 sm:h-7 md:w-9 md:h-9",
-  },
-  {
-    type: "cpu",
-    color: "#FFCCCC",
-    top: "42%",
-    left: "55%",
-    delay: "0.8s",
-    size: "w-6 h-6 sm:w-7 sm:h-7 md:w-9 md:h-9",
-  },
-  {
-    type: "rocket",
-    color: "#FFF9C8",
-    top: "58%",
-    left: "45%",
-    delay: "1.5s",
-    size: "w-7 h-7 sm:w-8 sm:h-8 md:w-10 md:h-10",
-  },
-
-  // Right side
-  {
-    type: "wifi",
-    color: "#C8F0D0",
-    top: "14%",
-    right: "10%",
-    delay: "0.6s",
-    size: "w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8",
-  },
-  {
-    type: "coffee",
-    color: "#FFCCCC",
-    top: "33%",
-    right: "14%",
-    delay: "1.3s",
-    size: "w-6 h-6 sm:w-8 sm:h-8 md:w-9 md:h-9",
-  },
-  {
-    type: "pizza",
-    color: "#FFF9C8",
-    top: "72%",
-    right: "12%",
-    delay: "2.4s",
-    size: "w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8",
-  },
-  {
-    type: "mouse",
-    color: "#C8E0FF",
-    top: "80%",
-    right: "9%",
-    delay: "2.9s",
-    size: "w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7",
-  },
-
-  // Smaller scattered ones (less crowded on mobile)
-  {
-    type: "bug",
-    color: "#C8E0FF",
-    top: "52%",
-    right: "22%",
-    delay: "1.7s",
-    size: "w-5 h-5 sm:w-6 sm:h-6 md:w-8 md:h-8",
-  },
-  {
-    type: "soda",
-    color: "#C8E0FF",
-    top: "24%",
-    left: "68%",
-    delay: "1.0s",
-    size: "w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7",
-  },
-  {
-    type: "snack",
-    color: "#C8F0D0",
-    top: "65%",
-    left: "72%",
-    delay: "2.2s",
-    size: "w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7",
-  },
-  {
-    type: "star",
-    color: "#FFF9C8",
-    top: "78%",
-    left: "20%",
-    delay: "3.1s",
-    size: "w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7",
-  },
-  {
-    type: "folder",
-    color: "#C8E0FF",
-    top: "38%",
-    left: "78%",
-    delay: "2.6s",
-    size: "w-5 h-5 sm:w-6 sm:h-6 md:w-8 md:h-8",
-  },
-];
 
 interface HeroProps {
   lang: Language;
@@ -182,35 +37,20 @@ export function Hero({ lang }: HeroProps) {
       : "font-[family-name:var(--font-pixel)]";
 
   return (
-    <section className="relative py-16 md:py-24 lg:py-32 overflow-hidden">
-      {/* Floating pixel coding icons */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {floatingIcons.map((icon, index) => (
-          <div
-            key={index}
-            className="absolute animate-bounce-slow opacity-50 sm:opacity-60 md:opacity-70 hover:opacity-100 transition-all duration-300"
-            style={{
-              top: icon.top,
-              left: icon.left,
-              right: icon.right,
-              animationDelay: icon.delay,
-              animationDuration: "4.2s", // slower & calmer
-            }}
-          >
-            <PixelIcon
-              type={icon.type}
-              className={icon.size}
-              color={icon.color}
-            />
-          </div>
-        ))}
+    <section className="relative py-16 md:py-24 lg:py-32 pb-24 md:pb-32 lg:pb-36 overflow-hidden">
+      {/* Floating soda & snacks */}
+      <FloatingSnacks variant="hero" />
 
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
         {/* Background pixel dots */}
         <div className="absolute top-20 left-[15%] w-2 h-2 bg-pixel-yellow opacity-40" />
         <div className="absolute top-32 right-[25%] w-2 h-2 bg-pixel-green opacity-30" />
         <div className="absolute bottom-24 left-[20%] w-2 h-2 bg-pixel-red opacity-35" />
         <div className="absolute bottom-16 right-[20%] w-2 h-2 bg-pixel-blue opacity-30" />
       </div>
+
+      {/* S & K mascots walking along the bottom */}
+      <Mascots lang={lang} />
 
       <div className="container mx-auto px-4 relative z-10 max-w-6xl">
         <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-16">

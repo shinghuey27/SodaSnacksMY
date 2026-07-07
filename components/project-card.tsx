@@ -99,6 +99,38 @@ function PixelBorder({
   );
 }
 
+// Pixel HUD status chip: ● LIVE / ⏸ PAUSED
+function StatusBadge({
+  badge,
+  lang,
+  className = "",
+}: {
+  badge: "live" | "paused";
+  lang: Language;
+  className?: string;
+}) {
+  const live = badge === "live";
+  const label = live
+    ? lang === "zh"
+      ? "● 运行中"
+      : "● LIVE"
+    : lang === "zh"
+      ? "⏸ 暂停中"
+      : "⏸ PAUSED";
+  const fontClass =
+    lang === "zh"
+      ? "font-[family-name:var(--font-chinese)] text-[11px]"
+      : "font-[family-name:var(--font-pixel)] text-[7px]";
+  return (
+    <span
+      className={`${fontClass} ${live ? "bg-pixel-green" : "bg-pixel-yellow"} text-white border-2 border-foreground px-1.5 py-0.5 whitespace-nowrap ${className}`}
+      style={{ boxShadow: "2px 2px 0 rgba(0,0,0,0.25)" }}
+    >
+      {label}
+    </span>
+  );
+}
+
 export function ProjectCard({
   project,
   lang,
@@ -118,7 +150,10 @@ export function ProjectCard({
       ? "font-[family-name:var(--font-chinese)]"
       : "font-[family-name:var(--font-pixel)]";
 
-  if (featured || project.featured) {
+  // Only the explicit prop decides the big layout — data-level `featured`
+  // marks the default selection, not the card style (mobile carousel needs
+  // every slide compact so heights stay even).
+  if (featured) {
     return (
       <PixelBorder color={project.accentColor} className="overflow-visible">
         <div className="p-0">
@@ -139,11 +174,14 @@ export function ProjectCard({
             >
               {lang === "zh" ? "精选项目" : "FEATURED PROJECT"}
             </span>
-            {/* Pixel decoration on right */}
-            <div className="ml-auto flex gap-1">
-              <div className="w-1.5 h-1.5 md:w-2 md:h-2 bg-white/80" />
-              <div className="w-1.5 h-1.5 md:w-2 md:h-2 bg-white/60" />
-              <div className="w-1.5 h-1.5 md:w-2 md:h-2 bg-white/40" />
+            {/* Status chip + pixel decoration on right */}
+            <div className="ml-auto flex items-center gap-2 md:gap-3">
+              {project.badge && <StatusBadge badge={project.badge} lang={lang} />}
+              <div className="hidden sm:flex gap-1">
+                <div className="w-1.5 h-1.5 md:w-2 md:h-2 bg-white/80" />
+                <div className="w-1.5 h-1.5 md:w-2 md:h-2 bg-white/60" />
+                <div className="w-1.5 h-1.5 md:w-2 md:h-2 bg-white/40" />
+              </div>
             </div>
           </div>
 
@@ -314,6 +352,9 @@ export function ProjectCard({
               {subtitle}
             </span>
           )}
+          {project.badge && (
+            <StatusBadge badge={project.badge} lang={lang} className="ml-auto" />
+          )}
         </div>
 
         {/* Image with pixel frame - using padding-bottom for Safari compatibility */}
@@ -352,13 +393,13 @@ export function ProjectCard({
             {title}
           </h3>
 
-          <p className="text-sm text-muted-foreground leading-relaxed mb-3 md:mb-4 ">
+          <p className="text-sm text-muted-foreground leading-relaxed mb-3 md:mb-4 line-clamp-3">
             {description}
           </p>
 
-          {/* Highlights */}
+          {/* Highlights (top 3 to keep cards scannable) */}
           <div className="space-y-1.5 md:space-y-2 mb-3 md:mb-4">
-            {highlights.map((highlight, i) => (
+            {highlights.slice(0, 3).map((highlight, i) => (
               <div key={i} className="flex items-center gap-2 md:gap-2.5">
                 <div
                   className="w-2 h-2 md:w-2.5 md:h-2.5 flex-shrink-0"

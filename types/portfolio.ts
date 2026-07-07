@@ -33,6 +33,8 @@ export interface ProjectData {
   link?: string
   accentColor: "red" | "yellow" | "green" | "blue"
   featured?: boolean
+  /** pixel HUD status chip on the card */
+  badge?: "live" | "paused"
 }
 
 export interface ServiceData {
