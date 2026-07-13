@@ -303,3 +303,109 @@
     animation: none !important;
   }
 }
+
+/* ── Entrance animations (motion upgrade) ─────────────────────
+   B: .px-step-in — 8-bit step slide (base vocabulary)
+   D: .px-scan-in — CRT scan reveal with glowing scanline
+   A: .px-cell(-play) — pixel-assemble overlay cells (see PixelAssemble)
+   .px-hidden — pre-entrance state, only under no-preference so
+   reduced-motion / no-JS users always see content. */
+
+@media (prefers-reduced-motion: no-preference) {
+  .px-hidden {
+    opacity: 0;
+  }
+}
+
+@keyframes px-step-in {
+  from {
+    opacity: 0;
+    transform: translateY(28px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.px-step-in {
+  animation: px-step-in 0.45s steps(5, end) both;
+}
+
+@keyframes px-scan-clip {
+  from {
+    clip-path: inset(0 0 100% 0);
+  }
+  to {
+    clip-path: inset(0 0 0% 0);
+  }
+}
+
+@keyframes px-scan-bar {
+  0% {
+    top: 0;
+    opacity: 1;
+  }
+  92% {
+    opacity: 1;
+  }
+  100% {
+    top: 100%;
+    opacity: 0;
+  }
+}
+
+.px-scan-in {
+  position: relative;
+  /* `backwards` (not `both`): a persisting final clip-path would clip the
+     pixel box-shadows forever; reverting to no clip after the run restores them. */
+  animation: px-scan-clip 0.7s steps(9, end) backwards;
+}
+
+.px-scan-in::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 4px;
+  background: var(--pixel-green);
+  box-shadow: 0 0 10px var(--pixel-green);
+  pointer-events: none;
+  opacity: 0;
+  animation: px-scan-bar 0.7s steps(9, end) both;
+  animation-delay: inherit;
+}
+
+@keyframes px-cell-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+.px-cell {
+  opacity: 1;
+}
+
+.px-cell-play {
+  animation: px-cell-out 0.15s steps(2, end) both;
+}
+
+/* Kill switch: reduced motion disables the whole vocabulary. */
+@media (prefers-reduced-motion: reduce) {
+  .px-step-in,
+  .px-scan-in,
+  .px-scan-in::after,
+  .px-cell-play {
+    animation: none !important;
+  }
+  .px-cell {
+    opacity: 0;
+  }
+  .px-scan-in::after {
+    opacity: 0;
+  }
+}
