@@ -37,8 +37,9 @@ export const services: ServiceData[] = [
     items: {
       en: [
         "React Native cross-platform apps",
+        "Native iOS & Android builds",
         "Offline-first architecture",
-        "Push notifications",
+        "Push notifications & deep links",
         "App Store & Play Store deployment",
       ],
       zh: [

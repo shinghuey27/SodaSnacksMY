@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { Language } from "@/types/portfolio";
 
 const content = {
@@ -22,6 +23,13 @@ interface HeaderProps {
 
 export function Header({ lang, setLang }: HeaderProps) {
   const t = content[lang];
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  const navItems = [
+    { href: "#portfolio", label: t.portfolio, color: "bg-pixel-red" },
+    { href: "#services", label: t.services, color: "bg-pixel-green" },
+    { href: "#contact", label: t.contact, color: "bg-pixel-blue" },
+  ];
 
   const handleLangChange = (newLang: Language) => {
     if (newLang === lang) return;
@@ -72,12 +80,13 @@ export function Header({ lang, setLang }: HeaderProps) {
           </a>
         </nav>
 
+        <div className="flex items-center gap-2 md:gap-3">
         {/* Language Toggle - Mobile Fixed */}
         <div className="flex border-2 border-foreground rounded-sm bg-background">
           <button
             type="button"
             onClick={() => handleLangChange("en")}
-            className={`px-5 py-3 text-xs font-[family-name:var(--font-pixel)] transition-all select-none touch-manipulation
+            className={`px-3 md:px-5 py-3 text-xs whitespace-nowrap font-[family-name:var(--font-pixel)] transition-all select-none touch-manipulation
               ${lang === "en"
                 ? "bg-foreground text-background"
                 : "bg-transparent text-foreground hover:bg-secondary active:bg-foreground active:text-background"
@@ -91,7 +100,7 @@ export function Header({ lang, setLang }: HeaderProps) {
           <button
             type="button"
             onClick={() => handleLangChange("zh")}
-            className={`px-5 py-3 text-xs font-[family-name:var(--font-pixel)] transition-all select-none touch-manipulation
+            className={`px-3 md:px-5 py-3 text-xs whitespace-nowrap font-[family-name:var(--font-pixel)] transition-all select-none touch-manipulation
               ${lang === "zh"
                 ? "bg-foreground text-background"
                 : "bg-transparent text-foreground hover:bg-secondary active:bg-foreground active:text-background"
@@ -100,7 +109,46 @@ export function Header({ lang, setLang }: HeaderProps) {
             中文
           </button>
         </div>
+
+        {/* Mobile menu toggle */}
+        <button
+          type="button"
+          onClick={() => setMenuOpen((open) => !open)}
+          aria-label={menuOpen ? "Close menu" : "Open menu"}
+          aria-expanded={menuOpen}
+          className="md:hidden flex flex-col items-center justify-center gap-[5px] w-11 h-11 border-2 border-foreground rounded-sm bg-background active:bg-secondary touch-manipulation"
+        >
+          {menuOpen ? (
+            <span className="font-[family-name:var(--font-pixel)] text-sm text-foreground leading-none">
+              ✕
+            </span>
+          ) : (
+            <>
+              <span className="block w-5 h-[3px] bg-foreground" />
+              <span className="block w-5 h-[3px] bg-foreground" />
+              <span className="block w-5 h-[3px] bg-foreground" />
+            </>
+          )}
+        </button>
+        </div>
       </div>
+
+      {/* Mobile Navigation */}
+      {menuOpen && (
+        <nav className="md:hidden border-t-2 border-foreground bg-background">
+          {navItems.map((item) => (
+            <a
+              key={item.href}
+              href={item.href}
+              onClick={() => setMenuOpen(false)}
+              className="flex items-center gap-3 px-6 py-4 border-b border-foreground/10 last:border-b-0 text-sm text-foreground active:bg-secondary touch-manipulation"
+            >
+              <span className={`w-2.5 h-2.5 ${item.color}`} />
+              {item.label}
+            </a>
+          ))}
+        </nav>
+      )}
     </header>
   );
 }

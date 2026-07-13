@@ -38,7 +38,7 @@
 1. **`hooks/use-in-view.ts`（新）** — IntersectionObserver 钩子：`once: true`、`threshold: 0.2`，返回 `{ ref, inView }`。内部整合现有 `lib/use-reduced-motion.ts`：reduced motion 时直接返回 `inView: true`（不注册 observer）。
 2. **`app/globals.css`** — 新增 keyframes：`px-scan-in`（D，clip-path + steps(9)）、`px-step-in`（B，steps(5)）、拼合覆盖格 `px-cell-out`；以及对应的工具类。动画只用 `transform` / `opacity` / `clip-path`，零布局抖动。
 3. **A 拼合覆盖层** — 小组件 `PixelAssemble`：内容上方绝对定位 5×4 网格（背景色单元格），nth-child 错峰淡出，动画结束后整层 `display: none`，`pointer-events: none`。
-4. **视差** — 在 `floating-snacks.tsx` 内：passive scroll 监听 + rAF 节流，对每个 sprite 施加 `translate3d(0, scrollY × factor, 0)`；reduced motion 时跳过。
+4. **视差** — `floating-snacks.tsx` 已实现三层视差（passive scroll + rAF 节流、reduced motion 跳过），现有层速 0.02/0.05/0.09 过于微弱，仅调参至 0.05/0.11/0.18 使其可感知。
 5. **各区块组件**（hero / portfolio / services / contact）挂 `useInView`，用条件 class 触发动画。
 
 ## 无障碍与性能约束

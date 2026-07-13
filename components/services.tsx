@@ -28,7 +28,7 @@ export function Services({ lang }: ServicesProps) {
       ? "font-[family-name:var(--font-chinese)] text-xl md:text-xxl"
       : "font-[family-name:var(--font-pixel)] text-lg md:text-xl ";
   return (
-    <section id="services" className="py-20">
+    <section id="services" className="py-20 scroll-mt-20">
       <div className="container mx-auto px-4">
         {/* Section header with pixel decoration */}
         <div className="text-center mb-16">

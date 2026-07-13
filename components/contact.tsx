@@ -38,6 +38,12 @@ const content = {
     ],
     send: "SEND MESSAGE",
     sending: "SENDING...",
+    fillToastTitle: "HOLD ON!",
+    fillToastBody: "Please fill in all fields",
+    sentToastTitle: "QUEST ACCEPTED!",
+    sentToastBody: "Message sent!",
+    failToastTitle: "FAILED",
+    failToastBody: "Try again",
     successMsg:
       "✅ MESSAGE SENT!\nYOUR QUEST HAS BEEN RECEIVED.\nRESPONSE IN 1–2 BUSINESS DAYS.",
     emailVal: "iwantsodasnacks@gmail.com",
@@ -83,6 +89,12 @@ const content = {
     ],
     send: "发送消息",
     sending: "发送中...",
+    fillToastTitle: "等一下！",
+    fillToastBody: "请填写所有字段",
+    sentToastTitle: "任务达成！",
+    sentToastBody: "消息已发送！",
+    failToastTitle: "发送失败",
+    failToastBody: "请重试",
     successMsg: "✅ 消息已发送！\n您的任务已收到。\n1–2个工作日内回复。",
     emailVal: "iwantsodasnacks@gmail.com",
     phone: "+60 11-3765 2814",
@@ -189,10 +201,19 @@ export function Contact({ lang }: ContactProps) {
     setToast({ data: { icon, title, body }, key: Date.now() });
   }, []);
 
+  const shake = () => {
+    setShaking(true);
+    setTimeout(() => setShaking(false), 400);
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!name || !email || !message) return;
+    if (!name.trim() || !email.trim() || !message.trim()) {
+      shake();
+      showToast("⚠️", t.fillToastTitle, t.fillToastBody);
+      return;
+    }
 
     setSending(true);
 
@@ -209,12 +230,12 @@ export function Contact({ lang }: ContactProps) {
 
       if (data.success) {
         setSent(true);
-        showToast("🏆", "QUEST ACCEPTED!", "Message sent!");
+        showToast("🏆", t.sentToastTitle, t.sentToastBody);
       } else {
         throw new Error();
       }
     } catch (err) {
-      showToast("❌", "FAILED", "Try again");
+      showToast("❌", t.failToastTitle, t.failToastBody);
     }
 
     setSending(false);
@@ -274,7 +295,7 @@ export function Contact({ lang }: ContactProps) {
   ];
 
   return (
-    <section id="contact" className="relative py-10 px-5 overflow-hidden">
+    <section id="contact" className="relative py-10 px-5 overflow-hidden scroll-mt-20">
       {/* keyframes */}
       <style>{`
         @keyframes px-block-bounce { from{transform:translateY(0)} to{transform:translateY(-8px)} }
@@ -362,11 +383,12 @@ export function Contact({ lang }: ContactProps) {
           <h3 className={`${pxFont} mb-5`}>{t.formTitle}</h3>
 
           {!sent ? (
-            <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+            <form onSubmit={handleSubmit} onInvalid={shake} className="flex flex-col gap-4">
               <div className="flex flex-col gap-1.5">
                 <label className={`${pxFont} text-xs`}>{t.nameLbl}</label>
                 <input
                   type="text"
+                  required
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   placeholder={t.namePH}
@@ -392,6 +414,7 @@ export function Contact({ lang }: ContactProps) {
                 <label className={`${pxFont} text-xs`}>{t.emailLbl}</label>
                 <input
                   type="email"
+                  required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder={t.emailPH}
@@ -417,6 +440,7 @@ export function Contact({ lang }: ContactProps) {
                 <label className={`${pxFont} text-xs`}>{t.msgLbl}</label>
                 <textarea
                   rows={4}
+                  required
                   value={message}
                   onChange={(e) => setMessage(e.target.value)}
                   placeholder={t.msgPH}

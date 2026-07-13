@@ -45,7 +45,7 @@ export function Portfolio({ lang }: PortfolioProps) {
   return (
     <section
       id="portfolio"
-      className="py-20 bg-background relative overflow-hidden"
+      className="py-20 bg-background relative overflow-hidden scroll-mt-20"
     >
       {/* Subtle pixel grid background - lighter to match hero */}
       <div
