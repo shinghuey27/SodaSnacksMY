@@ -54,7 +54,7 @@ const CONTACT_SNACKS: SnackConfig[] = [
   { snack: "bubble-s", top: "4%", right: "30%", delay: "0.5s", size: "w-4", layer: 2 },
 ];
 
-const LAYER_SPEED: Record<1 | 2 | 3, number> = { 1: 0.02, 2: 0.05, 3: 0.09 };
+const LAYER_SPEED: Record<1 | 2 | 3, number> = { 1: 0.05, 2: 0.11, 3: 0.18 };
 
 const SNACK_BY_NAME = new Map(SNACK_SET.map((s) => [s.name, s]));
 

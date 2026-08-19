@@ -5,6 +5,7 @@ import { services } from "@/data/services";
 import { ServiceCard } from "./service-card";
 import { PixelSprite } from "./pixel-sprite";
 import { MASCOT_K } from "./sprites/mascot-data";
+import { useInView } from "@/hooks/use-in-view";
 
 const content = {
   en: {
@@ -23,6 +24,7 @@ interface ServicesProps {
 
 export function Services({ lang }: ServicesProps) {
   const t = content[lang];
+  const { ref, inView } = useInView<HTMLDivElement>();
   const pxFont =
     lang === "zh"
       ? "font-[family-name:var(--font-chinese)] text-xl md:text-xxl"
@@ -50,9 +52,15 @@ export function Services({ lang }: ServicesProps) {
           <p className="text-muted-foreground">{t.subtitle}</p>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+        <div ref={ref} className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
           {services.map((service, i) => (
-            <ServiceCard key={i} service={service} lang={lang} index={i} />
+            <div
+              key={i}
+              className={inView ? "px-step-in" : "px-hidden"}
+              style={{ animationDelay: `${i * 120}ms` }}
+            >
+              <ServiceCard service={service} lang={lang} index={i} />
+            </div>
           ))}
         </div>
       </div>

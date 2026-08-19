@@ -8,6 +8,8 @@ import { projects } from "@/data/projects";
 import { ProjectCard } from "./project-card";
 import { PixelSprite } from "./pixel-sprite";
 import { MASCOT_S } from "./sprites/mascot-data";
+import { PixelAssemble } from "./pixel-assemble";
+import { useInView } from "@/hooks/use-in-view";
 
 const content = {
   en: {
@@ -35,6 +37,7 @@ export function Portfolio({ lang }: PortfolioProps) {
   ];
   const [selectedId, setSelectedId] = useState(featuredProject.id);
   const selected = ordered.find((p) => p.id === selectedId) ?? featuredProject;
+  const { ref: gridRef, inView } = useInView<HTMLDivElement>();
 
   // Use Chinese pixel font for Chinese text
   const pixelFontClass =
@@ -94,13 +97,15 @@ export function Portfolio({ lang }: PortfolioProps) {
         </div>
 
         {/* ── Desktop: featured window + cartridge selector ── */}
-        <div className="hidden md:block max-w-5xl mx-auto">
-          <div
-            key={selected.id}
-            style={{ animation: "px-cartridge-in 0.3s ease-out" }}
-          >
-            <ProjectCard project={selected} lang={lang} featured />
-          </div>
+        <div className="hidden md:block max-w-5xl mx-auto" ref={gridRef}>
+          <PixelAssemble play={inView}>
+            <div
+              key={selected.id}
+              style={{ animation: "px-cartridge-in 0.3s ease-out" }}
+            >
+              <ProjectCard project={selected} lang={lang} featured />
+            </div>
+          </PixelAssemble>
 
           <p
             className={`${pixelFontClass} text-center text-muted-foreground mt-10 mb-4 ${lang === "zh" ? "text-sm" : "text-[9px]"}`}
@@ -109,20 +114,27 @@ export function Portfolio({ lang }: PortfolioProps) {
           </p>
 
           <div className="grid grid-cols-4 gap-4 lg:gap-6">
-            {ordered.map((project) => (
-              <Cartridge
+            {ordered.map((project, i) => (
+              <div
                 key={project.id}
-                project={project}
-                lang={lang}
-                active={project.id === selectedId}
-                onSelect={() => setSelectedId(project.id)}
-              />
+                className={inView ? "px-step-in" : "px-hidden"}
+                style={{ animationDelay: `${400 + i * 80}ms` }}
+              >
+                <Cartridge
+                  project={project}
+                  lang={lang}
+                  active={project.id === selectedId}
+                  onSelect={() => setSelectedId(project.id)}
+                />
+              </div>
             ))}
           </div>
         </div>
 
         {/* ── Mobile: swipeable carousel ── */}
-        <MobileCarousel projects={ordered} lang={lang} />
+        <MobileCarouselReveal>
+          <MobileCarousel projects={ordered} lang={lang} />
+        </MobileCarouselReveal>
       </div>
 
       <div
@@ -133,6 +145,16 @@ export function Portfolio({ lang }: PortfolioProps) {
         }}
       />
     </section>
+  );
+}
+
+/* ── one-shot reveal wrapper for the mobile carousel ── */
+function MobileCarouselReveal({ children }: { children: React.ReactNode }) {
+  const { ref, inView } = useInView<HTMLDivElement>(0.1);
+  return (
+    <div ref={ref} className={`md:hidden ${inView ? "px-step-in" : "px-hidden"}`}>
+      {children}
+    </div>
   );
 }
 

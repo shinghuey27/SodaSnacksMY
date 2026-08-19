@@ -57,7 +57,7 @@ export function Hero({ lang }: HeroProps) {
           {/* Left: Text content */}
           <div className="flex-1 text-center lg:text-left">
             {/* START */}
-            <div className="relative flex justify-center lg:justify-start mb-8">
+            <div className="relative flex justify-center lg:justify-start mb-8 px-step-in">
               <div className="relative group">
                 <img
                   src="/pixel-logo.png"
@@ -74,28 +74,35 @@ export function Hero({ lang }: HeroProps) {
             </div>
             {/* END */}
             <h1
-              className={`${pixelFontClass} text-lg md:text-2xl lg:text-3xl text-foreground mb-3 leading-relaxed text-balance`}
+              className={`${pixelFontClass} text-lg md:text-2xl lg:text-3xl text-foreground mb-3 leading-relaxed text-balance px-step-in`}
+              style={{ animationDelay: "120ms" }}
             >
               {t.tagline}
             </h1>
             <h2
-              className={`${pixelFontClass} text-base md:text-xl lg:text-2xl text-pixel-red mb-6`}
+              className={`${pixelFontClass} text-base md:text-xl lg:text-2xl text-pixel-red mb-6 px-step-in`}
+              style={{ animationDelay: "240ms" }}
             >
               {t.subtitle}
             </h2>
 
-            <p className="max-w-lg text-base md:text-lg text-muted-foreground mb-8 leading-relaxed mx-auto lg:mx-0">
+            <p
+              className="max-w-lg text-base md:text-lg text-muted-foreground mb-8 leading-relaxed mx-auto lg:mx-0 px-step-in"
+              style={{ animationDelay: "360ms" }}
+            >
               {t.description}
             </p>
 
-            <PixelButton href="#contact" size="lg">
-              {t.cta}
-            </PixelButton>
+            <div className="px-step-in" style={{ animationDelay: "480ms" }}>
+              <PixelButton href="#contact" size="lg">
+                {t.cta}
+              </PixelButton>
+            </div>
           </div>
 
           {/* Right: Hero image with pixel frame */}
           <div className="flex-1 flex justify-center lg:justify-end">
-            <div className="relative">
+            <div className="relative px-scan-in" style={{ animationDelay: "250ms" }}>
               {/* Pixel frame decoration */}
               <div className="absolute -inset-3 md:-inset-4">
                 {/* Corner pixels */}

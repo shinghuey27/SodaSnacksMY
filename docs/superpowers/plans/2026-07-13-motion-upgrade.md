@@ -285,8 +285,9 @@ git commit -m "feat: hero entrance animations (step-slide text, CRT-scan image)"
 
 import { useState } from "react";
 
-/** Scrambled per-cell delays (ms). Index 14 is the last to finish. */
-const CELL_DELAYS = [450, 100, 800, 300, 600, 950, 200, 550, 50, 700, 350, 900, 150, 500, 1000, 250, 650, 0, 850, 400];
+/** Scrambled per-cell delays (ms). Max 500ms + 150ms cell dissolve keeps the
+ *  whole assemble ≈650ms, inside the plan's 300–700ms entrance budget. */
+const CELL_DELAYS = [225, 50, 400, 150, 300, 475, 100, 275, 25, 350, 175, 450, 75, 250, 500, 125, 325, 0, 425, 200];
 const LAST_CELL = CELL_DELAYS.indexOf(Math.max(...CELL_DELAYS));
 
 interface PixelAssembleProps {
