@@ -1,11 +1,12 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useRef } from "react";
 import { Language } from "@/types/portfolio";
 import { PixelMarquee } from "./pixel-marquee";
 import { PixelCharacterDuo } from "./pixel-character";
 import { PixelAchievementToast } from "./pixel-achievement-toast";
 import { FloatingSnacks } from "./floating-snacks";
+import { useInView } from "@/hooks/use-in-view";
 
 /* ── types ── */
 interface ToastData {
@@ -197,9 +198,21 @@ export function Contact({ lang }: ContactProps) {
     null,
   );
 
+  const msgRef = useRef<HTMLTextAreaElement>(null);
+
+  /* grow the textarea with its content, up to ~14 rows then scroll */
+  const autoGrow = useCallback(() => {
+    const el = msgRef.current;
+    if (!el) return;
+    el.style.height = "auto";
+    el.style.height = `${Math.min(el.scrollHeight, 340)}px`;
+  }, []);
+
   const showToast = useCallback((icon: string, title: string, body: string) => {
     setToast({ data: { icon, title, body }, key: Date.now() });
   }, []);
+
+  const { ref: gridInViewRef, inView } = useInView<HTMLDivElement>(0.15);
 
   const shake = () => {
     setShaking(true);
@@ -354,8 +367,11 @@ export function Contact({ lang }: ContactProps) {
       </div>
 
       {/* ── Grid ── */}
-      <div className="max-w-4xl mx-auto grid md:grid-cols-2 gap-8 relative z-10">
+      <div ref={gridInViewRef} className="max-w-4xl mx-auto grid md:grid-cols-2 gap-8 relative z-10">
         {/* ══ FORM CARD ══ */}
+        {/* wrapper carries the scan entrance; the card itself keeps its inline
+            shake animation, and the two must not share one element */}
+        <div className={inView ? "px-scan-in" : "px-hidden"}>
         <div
           className="relative bg-card border-[3px] border-foreground p-7 transition-[transform,box-shadow] duration-150"
           style={{
@@ -439,12 +455,16 @@ export function Contact({ lang }: ContactProps) {
               <div className="flex flex-col gap-1.5">
                 <label className={`${pxFont} text-xs`}>{t.msgLbl}</label>
                 <textarea
+                  ref={msgRef}
                   rows={4}
                   required
                   value={message}
-                  onChange={(e) => setMessage(e.target.value)}
+                  onChange={(e) => {
+                    setMessage(e.target.value);
+                    autoGrow();
+                  }}
                   placeholder={t.msgPH}
-                  className={`w-full px-3 py-2.5 ${vtFont} text-lg bg-secondary border-[3px] border-foreground text-foreground placeholder:text-muted-foreground outline-none transition-all resize-none`}
+                  className={`w-full px-3 py-2.5 ${vtFont} text-lg bg-secondary border-[3px] border-foreground text-foreground placeholder:text-muted-foreground outline-none transition-all resize-y overflow-y-auto`}
                   style={{ boxShadow: "3px 3px 0 rgba(58,58,56,0.8)" }}
                   onFocus={(e) => {
                     e.currentTarget.style.borderColor = "var(--pixel-blue)";
@@ -516,14 +536,16 @@ export function Contact({ lang }: ContactProps) {
             </div>
           )}
         </div>
+        </div>
 
         {/* ══ INFO CARD ══ */}
         <div
-          className="relative bg-card border-[3px] border-foreground p-7 transition-[transform,box-shadow] duration-150"
+          className={`relative bg-card border-[3px] border-foreground p-7 transition-[transform,box-shadow] duration-150 ${inView ? "px-step-in" : "px-hidden"}`}
           style={{
             boxShadow: "6px 6px 0 rgba(58,58,56,0.8)",
             outline: "2px dashed rgba(58,58,56,.12)",
             outlineOffset: "-4px",
+            animationDelay: "300ms",
           }}
           onMouseEnter={(e) =>
             (e.currentTarget.style.boxShadow = "8px 8px 0 rgba(58,58,56,0.8)")
