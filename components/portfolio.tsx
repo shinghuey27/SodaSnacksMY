@@ -97,23 +97,28 @@ export function Portfolio({ lang }: PortfolioProps) {
         </div>
 
         {/* ── Desktop: featured window + cartridge selector ── */}
-        <div className="hidden md:block max-w-5xl mx-auto" ref={gridRef}>
-          <PixelAssemble play={inView}>
-            <div
-              key={selected.id}
-              style={{ animation: "px-cartridge-in 0.3s ease-out" }}
+        <div className="hidden md:block" ref={gridRef}>
+          <div className="max-w-5xl mx-auto">
+            <PixelAssemble play={inView}>
+              <div
+                key={selected.id}
+                style={{ animation: "px-cartridge-in 0.3s ease-out" }}
+              >
+                <ProjectCard project={selected} lang={lang} featured />
+              </div>
+            </PixelAssemble>
+
+            <p
+              className={`${pixelFontClass} text-center text-muted-foreground mt-10 mb-4 ${lang === "zh" ? "text-sm" : "text-[9px]"}`}
             >
-              <ProjectCard project={selected} lang={lang} featured />
-            </div>
-          </PixelAssemble>
+              {t.insert}
+            </p>
+          </div>
 
-          <p
-            className={`${pixelFontClass} text-center text-muted-foreground mt-10 mb-4 ${lang === "zh" ? "text-sm" : "text-[9px]"}`}
-          >
-            {t.insert}
-          </p>
-
-          <div className="grid grid-cols-4 gap-4 lg:gap-6">
+          {/* cartridge row is deliberately wider than the featured card above,
+              so the thumbnails stay legible while keeping a "smaller than the
+              featured card" visual hierarchy */}
+          <div className="max-w-[1331px] mx-auto grid grid-cols-4 gap-5 lg:gap-8">
             {ordered.map((project, i) => (
               <div
                 key={project.id}
@@ -182,7 +187,7 @@ function Cartridge({
       type="button"
       onClick={onSelect}
       aria-pressed={active}
-      className={`group text-left cursor-pointer border-[3px] border-foreground bg-card transition-transform duration-150 ${
+      className={`group w-full text-left cursor-pointer border-[3px] border-foreground bg-card transition-transform duration-150 ${
         active ? "-translate-y-1.5" : "hover:-translate-y-1 opacity-85 hover:opacity-100"
       }`}
       style={{
@@ -215,7 +220,7 @@ function Cartridge({
 
       <div className="px-2 py-2 flex items-center gap-1.5">
         <span
-          className={`${pixelFontClass} leading-snug ${active ? "text-foreground" : "text-muted-foreground"} line-clamp-2`}
+          className={`${pixelFontClass} leading-snug min-h-[2.75em] ${active ? "text-foreground" : "text-muted-foreground"} line-clamp-2`}
         >
           {active ? "▶ " : ""}
           {title}
