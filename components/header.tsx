@@ -33,7 +33,6 @@ export function Header({ lang, setLang }: HeaderProps) {
 
   const handleLangChange = (newLang: Language) => {
     if (newLang === lang) return;
-    console.log("[Header] Language changed to:", newLang); // This should appear in browser console on mobile too
     setLang(newLang);
   };
 
@@ -47,7 +46,9 @@ export function Header({ lang, setLang }: HeaderProps) {
         >
           <img
             src="/pixel-logo.png"
-            alt="Pixel Logo"
+            alt=""
+            width={40}
+            height={40}
             className="w-10 h-10 group-hover:scale-110 transition-transform duration-200"
           />
           <span className="font-[family-name:var(--font-pixel)] text-xs tracking-tight text-foreground select-none">
@@ -86,6 +87,7 @@ export function Header({ lang, setLang }: HeaderProps) {
           <button
             type="button"
             onClick={() => handleLangChange("en")}
+            aria-pressed={lang === "en"}
             className={`px-3 md:px-5 py-3 text-xs whitespace-nowrap font-[family-name:var(--font-pixel)] transition-all select-none touch-manipulation
               ${lang === "en"
                 ? "bg-foreground text-background"
@@ -100,6 +102,7 @@ export function Header({ lang, setLang }: HeaderProps) {
           <button
             type="button"
             onClick={() => handleLangChange("zh")}
+            aria-pressed={lang === "zh"}
             className={`px-3 md:px-5 py-3 text-xs whitespace-nowrap font-[family-name:var(--font-pixel)] transition-all select-none touch-manipulation
               ${lang === "zh"
                 ? "bg-foreground text-background"

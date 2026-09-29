@@ -26,9 +26,9 @@ const content = {
     emailLbl: "► Email Address",
     topicLbl: "► Quest Type",
     msgLbl: "► Your Message",
-    namePH: "Enter your name...",
+    namePH: "e.g. Alex Tan…",
     emailPH: "hero@example.com",
-    msgPH: "Type your request here...",
+    msgPH: "Tell us about your project…",
     topics: [
       "— SELECT MISSION —",
       "⚔ General Inquiry",
@@ -38,7 +38,7 @@ const content = {
       "🐛 Bug Report",
     ],
     send: "SEND MESSAGE",
-    sending: "SENDING...",
+    sending: "SENDING…",
     fillToastTitle: "HOLD ON!",
     fillToastBody: "Please fill in all fields",
     sentToastTitle: "QUEST ACCEPTED!",
@@ -77,9 +77,9 @@ const content = {
     emailLbl: "► 邮箱地址",
     topicLbl: "► 任务类型",
     msgLbl: "► 您的留言",
-    namePH: "输入您的姓名...",
+    namePH: "例如：陈先生…",
     emailPH: "hero@example.com",
-    msgPH: "在这里输入您的需求...",
+    msgPH: "请描述您的需求…",
     topics: [
       "— 选择任务 —",
       "⚔ 一般咨询",
@@ -89,7 +89,7 @@ const content = {
       "🐛 错误报告",
     ],
     send: "发送消息",
-    sending: "发送中...",
+    sending: "发送中…",
     fillToastTitle: "等一下！",
     fillToastBody: "请填写所有字段",
     sentToastTitle: "任务达成！",
@@ -197,7 +197,10 @@ export function Contact({ lang }: ContactProps) {
   const [toast, setToast] = useState<{ data: ToastData; key: number } | null>(
     null,
   );
+  const [errors, setErrors] = useState<Partial<Record<"name" | "email" | "message" | "form", string>>>({});
 
+  const nameRef = useRef<HTMLInputElement>(null);
+  const emailRef = useRef<HTMLInputElement>(null);
   const msgRef = useRef<HTMLTextAreaElement>(null);
 
   /* grow the textarea with its content, up to ~14 rows then scroll */
@@ -222,9 +225,17 @@ export function Contact({ lang }: ContactProps) {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!name.trim() || !email.trim() || !message.trim()) {
+    const nextErrors: typeof errors = {};
+    if (!name.trim()) nextErrors.name = lang === "zh" ? "请输入姓名。" : "Enter your name.";
+    if (!email.trim()) nextErrors.email = lang === "zh" ? "请输入电邮地址。" : "Enter your email address.";
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) nextErrors.email = lang === "zh" ? "请输入有效的电邮地址。" : "Enter a valid email address.";
+    if (!message.trim()) nextErrors.message = lang === "zh" ? "请输入留言。" : "Enter your message.";
+    setErrors(nextErrors);
+    if (Object.keys(nextErrors).length) {
       shake();
-      showToast("⚠️", t.fillToastTitle, t.fillToastBody);
+      if (nextErrors.name) nameRef.current?.focus();
+      else if (nextErrors.email) emailRef.current?.focus();
+      else msgRef.current?.focus();
       return;
     }
 
@@ -248,7 +259,7 @@ export function Contact({ lang }: ContactProps) {
         throw new Error();
       }
     } catch (err) {
-      showToast("❌", t.failToastTitle, t.failToastBody);
+      setErrors({ form: lang === "zh" ? "发送失败，请稍后重试，或使用下方电邮联系我们。" : "Message not sent. Try again, or email us using the address below." });
     }
 
     setSending(false);
@@ -399,17 +410,22 @@ export function Contact({ lang }: ContactProps) {
           <h3 className={`${pxFont} mb-5`}>{t.formTitle}</h3>
 
           {!sent ? (
-            <form onSubmit={handleSubmit} onInvalid={shake} className="flex flex-col gap-4">
+            <form onSubmit={handleSubmit} noValidate className="flex flex-col gap-4">
               <div className="flex flex-col gap-1.5">
-                <label className={`${pxFont} text-xs`}>{t.nameLbl}</label>
+                <label htmlFor="contact-name" className={`${pxFont} text-xs`}>{t.nameLbl}</label>
                 <input
+                  ref={nameRef}
+                  id="contact-name"
+                  name="name"
                   type="text"
                   required
                   value={name}
-                  onChange={(e) => setName(e.target.value)}
+                  onChange={(e) => { setName(e.target.value); setErrors((prev) => ({ ...prev, name: undefined })); }}
                   placeholder={t.namePH}
-                  autoComplete="off"
-                  className={`w-full px-3 py-2.5 ${vtFont} text-lg bg-secondary border-[3px] border-foreground text-foreground placeholder:text-muted-foreground outline-none transition-all`}
+                  autoComplete="name"
+                  aria-invalid={Boolean(errors.name)}
+                  aria-describedby={errors.name ? "contact-name-error" : undefined}
+                  className={`w-full px-3 py-2.5 ${vtFont} text-lg bg-secondary border-[3px] border-foreground text-foreground placeholder:text-muted-foreground transition-colors`}
                   style={{ boxShadow: "3px 3px 0 rgba(58,58,56,0.8)" }}
                   onFocus={(e) => {
                     e.currentTarget.style.borderColor = "var(--pixel-blue)";
@@ -424,18 +440,25 @@ export function Contact({ lang }: ContactProps) {
                     e.currentTarget.style.background = "";
                   }}
                 />
+                {errors.name && <p id="contact-name-error" className="text-sm text-red-700" role="alert">{errors.name}</p>}
               </div>
 
               <div className="flex flex-col gap-1.5">
-                <label className={`${pxFont} text-xs`}>{t.emailLbl}</label>
+                <label htmlFor="contact-email" className={`${pxFont} text-xs`}>{t.emailLbl}</label>
                 <input
+                  ref={emailRef}
+                  id="contact-email"
+                  name="email"
                   type="email"
                   required
                   value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  onChange={(e) => { setEmail(e.target.value); setErrors((prev) => ({ ...prev, email: undefined })); }}
                   placeholder={t.emailPH}
-                  autoComplete="off"
-                  className={`w-full px-3 py-2.5 ${vtFont} text-lg bg-secondary border-[3px] border-foreground text-foreground placeholder:text-muted-foreground outline-none transition-all`}
+                  autoComplete="email"
+                  spellCheck={false}
+                  aria-invalid={Boolean(errors.email)}
+                  aria-describedby={errors.email ? "contact-email-error" : undefined}
+                  className={`w-full px-3 py-2.5 ${vtFont} text-lg bg-secondary border-[3px] border-foreground text-foreground placeholder:text-muted-foreground transition-colors`}
                   style={{ boxShadow: "3px 3px 0 rgba(58,58,56,0.8)" }}
                   onFocus={(e) => {
                     e.currentTarget.style.borderColor = "var(--pixel-blue)";
@@ -450,21 +473,27 @@ export function Contact({ lang }: ContactProps) {
                     e.currentTarget.style.background = "";
                   }}
                 />
+                {errors.email && <p id="contact-email-error" className="text-sm text-red-700" role="alert">{errors.email}</p>}
               </div>
 
               <div className="flex flex-col gap-1.5">
-                <label className={`${pxFont} text-xs`}>{t.msgLbl}</label>
+                <label htmlFor="contact-message" className={`${pxFont} text-xs`}>{t.msgLbl}</label>
                 <textarea
                   ref={msgRef}
+                  id="contact-message"
+                  name="message"
                   rows={4}
                   required
                   value={message}
                   onChange={(e) => {
                     setMessage(e.target.value);
+                    setErrors((prev) => ({ ...prev, message: undefined }));
                     autoGrow();
                   }}
                   placeholder={t.msgPH}
-                  className={`w-full px-3 py-2.5 ${vtFont} text-lg bg-secondary border-[3px] border-foreground text-foreground placeholder:text-muted-foreground outline-none transition-all resize-y overflow-y-auto`}
+                  aria-invalid={Boolean(errors.message)}
+                  aria-describedby={errors.message ? "contact-message-error" : undefined}
+                  className={`w-full px-3 py-2.5 ${vtFont} text-lg bg-secondary border-[3px] border-foreground text-foreground placeholder:text-muted-foreground transition-colors resize-y overflow-y-auto`}
                   style={{ boxShadow: "3px 3px 0 rgba(58,58,56,0.8)" }}
                   onFocus={(e) => {
                     e.currentTarget.style.borderColor = "var(--pixel-blue)";
@@ -479,12 +508,15 @@ export function Contact({ lang }: ContactProps) {
                     e.currentTarget.style.background = "";
                   }}
                 />
+                {errors.message && <p id="contact-message-error" className="text-sm text-red-700" role="alert">{errors.message}</p>}
               </div>
+
+              {errors.form && <p className="text-sm text-red-700" role="alert">{errors.form}</p>}
 
               <button
                 type="submit"
                 disabled={sending}
-                className={`${pxFont} relative text-base w-full flex items-center justify-center gap-2.5 py-3.5 px-5 text-white border-[3px] border-foreground overflow-hidden transition-all
+                className={`${pxFont} relative text-base w-full flex items-center justify-center gap-2.5 py-3.5 px-5 text-[#252525] border-[3px] border-foreground overflow-hidden transition-[transform,box-shadow,background-color]
                   ${sending ? "bg-pixel-green/80 cursor-wait" : "bg-pixel-green cursor-pointer"}`}
                 style={{ boxShadow: "4px 4px 0 rgba(58,58,56,0.8)" }}
                 onMouseEnter={(e) => {
@@ -521,7 +553,7 @@ export function Contact({ lang }: ContactProps) {
             </form>
           ) : (
             <div
-              className={`${pxFont} p-4 bg-pixel-green text-white border-[3px] border-foreground text-center leading-[1.9]`}
+              className={`${pxFont} p-4 bg-pixel-green text-[#252525] border-[3px] border-foreground text-center leading-[1.9]`}
               style={{
                 boxShadow: "3px 3px 0 rgba(58,58,56,0.8)",
                 animation: "px-pop-in .3s cubic-bezier(.36,.07,.19,.97)",

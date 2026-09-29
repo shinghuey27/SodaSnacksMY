@@ -25,12 +25,17 @@ export function Footer({ lang }: FooterProps) {
         <div className="flex flex-col items-center gap-6">
           <img
             src="/pixel-logo.png"
-            alt="Pixel Logo"
+            alt=""
+            width={48}
+            height={48}
             className="w-12 h-12 hover:scale-110 transition-transform"
           />
           <p className="text-sm text-muted-foreground text-center max-w-md">
             {t.tagline}
           </p>
+          <a href="/privacy" className="text-sm underline underline-offset-4 hover:text-pixel-red focus-visible:outline-2 focus-visible:outline-offset-4">
+            {lang === "zh" ? "隐私政策" : "Privacy Policy"}
+          </a>
 
           {/* Pixel decoration - animated */}
           <div className="flex gap-2">

@@ -141,6 +141,33 @@
   }
 }
 
+.skip-link {
+  position: fixed;
+  top: 0.75rem;
+  left: 0.75rem;
+  z-index: 1000;
+  padding: 0.75rem 1rem;
+  background: var(--foreground);
+  color: var(--background);
+  transform: translateY(-150%);
+}
+.skip-link:focus-visible { transform: translateY(0); }
+.skip-zh { display: none; }
+html[lang="zh-Hans"] .skip-en { display: none; }
+html[lang="zh-Hans"] .skip-zh { display: inline; }
+:where(a, button, input, textarea):focus-visible {
+  outline: 3px solid var(--ring);
+  outline-offset: 3px;
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
 @keyframes pixel-bounce {
   0%,
   100% {

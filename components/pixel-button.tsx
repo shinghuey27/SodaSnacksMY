@@ -34,7 +34,7 @@ export function PixelButton({
     primary: {
       bg: "var(--foreground)",
       text: "var(--background)",
-      hoverBg: "var(--pixel-red)",
+      hoverBg: "#c42837",
       hoverText: "#ffffff",
       shadow: "var(--pixel-yellow)",
       hoverShadow: "var(--pixel-green)",
@@ -42,9 +42,9 @@ export function PixelButton({
     },
     secondary: {
       bg: "var(--pixel-blue)",
-      text: "#ffffff",
+      text: "#1a1a1a",
       hoverBg: "var(--pixel-green)",
-      hoverText: "#ffffff",
+      hoverText: "#1a1a1a",
       shadow: "var(--pixel-yellow)",
       hoverShadow: "var(--pixel-red)",
       outline: "var(--pixel-yellow)",

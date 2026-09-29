@@ -121,10 +121,10 @@ function StatusBadge({
   const fontClass =
     lang === "zh"
       ? "font-[family-name:var(--font-chinese)] text-[11px]"
-      : "font-[family-name:var(--font-pixel)] text-[7px]";
+      : "font-[family-name:var(--font-pixel)] text-[10px]";
   return (
     <span
-      className={`${fontClass} ${live ? "bg-pixel-green" : "bg-pixel-yellow"} text-white border-2 border-foreground px-1.5 py-0.5 whitespace-nowrap ${className}`}
+      className={`${fontClass} ${live ? "bg-pixel-green" : "bg-pixel-yellow"} text-[#252525] border-2 border-foreground px-1.5 py-0.5 whitespace-nowrap ${className}`}
       style={{ boxShadow: "2px 2px 0 rgba(0,0,0,0.25)" }}
     >
       {label}
@@ -353,7 +353,7 @@ export function ProjectCard({
           </div>
           {subtitle && (
             <span
-              className={`${pixelFontClass}  text-white ml-1 truncate tracking-wide drop-shadow-[1px_1px_0_rgba(0,0,0,0.3)] ${lang === 'zh' ? 'text-md md:text-[md]' : 'text-xs md:text-[8px]'}`}
+              className={`${pixelFontClass} text-white ml-1 truncate tracking-wide drop-shadow-[1px_1px_0_rgba(0,0,0,0.3)] ${lang === 'zh' ? 'text-sm' : 'text-[10px]'}`}
             >
               {subtitle}
             </span>

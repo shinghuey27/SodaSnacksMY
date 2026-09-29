@@ -83,7 +83,7 @@ const zhSections = [
 
 export default function PrivacyPage() {
   return (
-    <main className="min-h-screen bg-[#fbf9f0] text-[#3a3a38]">
+    <main id="main-content" className="min-h-screen bg-[#fbf9f0] text-[#3a3a38]">
       <div className="border-b-4 border-[#3a3a38] bg-[#f4c430]">
         <div className="mx-auto flex max-w-5xl items-center justify-between px-5 py-3">
           <a
@@ -118,6 +118,8 @@ export default function PrivacyPage() {
           <img
             src="/pixel-logo.png"
             alt="SodaSnacks"
+            width={144}
+            height={144}
             className="mx-auto h-28 w-28 object-contain sm:h-36 sm:w-36"
           />
         </header>
@@ -188,7 +190,7 @@ export default function PrivacyPage() {
             </a>
             <a
               href="https://paywhat.sodasnacks.my/privacy"
-              className="inline-flex items-center justify-between gap-4 border-2 border-[#fbf9f0] bg-[#3a86ff] px-4 py-3 font-bold text-white hover:bg-white hover:text-[#3a3a38]"
+              className="inline-flex items-center justify-between gap-4 border-2 border-[#fbf9f0] bg-[#245fac] px-4 py-3 font-bold text-white hover:bg-white hover:text-[#3a3a38]"
             >
               PayWhat Privacy <ExternalLink size={16} aria-hidden="true" />
             </a>
@@ -205,7 +207,7 @@ export default function PrivacyPage() {
           </p>
           <a
             href={`mailto:${contactEmail}`}
-            className="mt-5 inline-flex border-3 border-[#3a3a38] bg-[#e63946] px-5 py-3 font-bold text-white shadow-[4px_4px_0_#3a3a38] hover:translate-x-1 hover:translate-y-1 hover:shadow-none"
+            className="mt-5 inline-flex border-3 border-[#3a3a38] bg-[#c42837] px-5 py-3 font-bold text-white shadow-[4px_4px_0_#3a3a38] hover:translate-x-1 hover:translate-y-1 hover:shadow-none"
           >
             {contactEmail}
           </a>

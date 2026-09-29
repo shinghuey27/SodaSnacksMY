@@ -107,6 +107,7 @@ export default function RootLayout({
         />
       </head>
       <body className={`${inter.variable} ${pressStart.variable} font-sans antialiased`}>
+        <a href="#main-content" className="skip-link"><span className="skip-en">Skip to content</span><span className="skip-zh" lang="zh-Hans">跳至主要内容</span></a>
         {children}
         <Analytics />
       </body>

@@ -37,7 +37,7 @@ export function Hero({ lang }: HeroProps) {
       : "font-[family-name:var(--font-pixel)]";
 
   return (
-    <section className="relative py-16 md:py-24 lg:py-32 pb-24 md:pb-32 lg:pb-36 overflow-hidden">
+    <section className="relative py-12 md:py-16 lg:py-20 pb-20 md:pb-24 lg:pb-24 overflow-hidden">
       {/* Floating soda & snacks */}
       <FloatingSnacks variant="hero" />
 
@@ -61,7 +61,9 @@ export function Hero({ lang }: HeroProps) {
               <div className="relative group">
                 <img
                   src="/pixel-logo.png"
-                  alt="Pixel logo"
+                  alt=""
+                  width={112}
+                  height={112}
                   className="w-20 h-20 md:w-28 md:h-28 
                  drop-shadow-[0_0_15px_#7EB8FF] 
                  drop-shadow-[0_0_25px_#4D96FF]

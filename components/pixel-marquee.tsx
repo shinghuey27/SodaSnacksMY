@@ -1,5 +1,8 @@
 "use client"
 
+import { useState } from "react"
+import { useReducedMotion } from "@/lib/use-reduced-motion"
+
 interface PixelMarqueeProps {
   items?: string[]
   lang?:any
@@ -15,21 +18,23 @@ const defaultItems = [
 ]
 
 export function PixelMarquee({ items = defaultItems, lang }: PixelMarqueeProps) {
+  const [paused, setPaused] = useState(false)
+  const reduced = useReducedMotion()
   // Duplicate for seamless loop
   const repeated = [...items, ...items]
-  console.log(lang,'yo')
   const pxFont =
     lang === "zh"
       ? "font-[family-name:var(--font-chinese)] text-xs"
-      : "font-[family-name:var(--font-pixel)] text-[9px]";
+      : "font-[family-name:var(--font-pixel)] text-[10px]";
   return (
-    <div className="overflow-hidden border-y-[3px] border-foreground bg-foreground py-1">
+    <div className="flex items-center border-y-[3px] border-foreground bg-foreground text-background">
+      <div className="min-w-0 flex-1 overflow-hidden py-1">
       <div
         className="flex w-max"
-        style={{ animation: "px-scroll 14s linear infinite" }}
+        style={{ animation: reduced ? "none" : "px-scroll 14s linear infinite", animationPlayState: paused ? "paused" : "running" }}
       >
         {repeated.map((item, i) => (
-          <span key={i} className="flex items-center">
+          <span key={i} className="flex items-center" aria-hidden={i >= items.length}>
             <span
               className={`${pxFont} text-background px-4 whitespace-nowrap opacity-85 tracking-wide`}
             >
@@ -41,6 +46,10 @@ export function PixelMarquee({ items = defaultItems, lang }: PixelMarqueeProps) 
           </span>
         ))}
       </div>
+      </div>
+      {!reduced && <button type="button" onClick={() => setPaused((value) => !value)} className="shrink-0 border-l-2 border-background/50 px-3 py-2 text-xs hover:bg-background hover:text-foreground" aria-label={paused ? (lang === "zh" ? "播放文字跑马灯" : "Play marquee") : (lang === "zh" ? "暂停文字跑马灯" : "Pause marquee")}>
+        {paused ? "▶" : "Ⅱ"}
+      </button>}
       <style>{`
         @keyframes px-scroll {
           from { transform: translateX(0); }

@@ -16,6 +16,8 @@ export function ShowcaseModal({ title, groups, lang, onClose }: ShowcaseModalPro
   const [groupIdx, setGroupIdx] = useState(0);
   const [shotIdx, setShotIdx] = useState(0);
   const [imgError, setImgError] = useState(false);
+  const desktopDialogRef = useRef<HTMLDivElement>(null);
+  const mobileDialogRef = useRef<HTMLDivElement>(null);
 
   const group = groups[groupIdx];
   const shot = group.shots[shotIdx];
@@ -48,14 +50,28 @@ export function ShowcaseModal({ title, groups, lang, onClose }: ShowcaseModalPro
 
   useEffect(() => {
     const previousOverflow = document.body.style.overflow;
+    const previousFocus = document.activeElement instanceof HTMLElement ? document.activeElement : null;
     document.body.style.overflow = "hidden";
+    const dialog = window.matchMedia("(min-width: 768px)").matches ? desktopDialogRef.current : mobileDialogRef.current;
+    Array.from(dialog?.querySelectorAll<HTMLElement>('button[aria-label]') ?? []).find((button) => button.getClientRects().length > 0)?.focus();
     return () => {
       document.body.style.overflow = previousOverflow;
+      previousFocus?.focus();
     };
   }, []);
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Tab") {
+        const dialog = window.matchMedia("(min-width: 768px)").matches ? desktopDialogRef.current : mobileDialogRef.current;
+        const controls = Array.from(dialog?.querySelectorAll<HTMLElement>("button:not([disabled])") ?? []).filter((button) => button.getClientRects().length > 0);
+        if (!controls.length) return;
+        const first = controls[0];
+        const last = controls[controls.length - 1];
+        if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+        else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+        return;
+      }
       if (e.key === "ArrowLeft") prevShot();
       if (e.key === "ArrowRight") nextShot();
       if (e.key === "Escape") onClose();
@@ -168,9 +184,14 @@ export function ShowcaseModal({ title, groups, lang, onClose }: ShowcaseModalPro
         ))}
       </div>
 
-      <span className={`${pixelFontClass} text-[8px] text-muted-foreground md:hidden`}>
-        ◀ {lang === "zh" ? "滑动切换" : "SWIPE"} ▶
-      </span>
+      <div className="flex gap-3 md:hidden">
+        <button type="button" onClick={prevShot} className="border-2 border-foreground bg-card px-3 py-2 text-sm hover:bg-secondary">
+          {lang === "zh" ? "上一张" : "Previous"}
+        </button>
+        <button type="button" onClick={nextShot} className="border-2 border-foreground bg-card px-3 py-2 text-sm hover:bg-secondary">
+          {lang === "zh" ? "下一张" : "Next"}
+        </button>
+      </div>
     </div>
   );
 
@@ -183,7 +204,7 @@ export function ShowcaseModal({ title, groups, lang, onClose }: ShowcaseModalPro
             <div className="w-2.5 h-2.5 bg-white/70 border border-white/40" />
             <div className="w-2.5 h-2.5 bg-white/50 border border-white/30" />
           </div>
-          <span className={`${pixelFontClass} text-white text-[9px] tracking-wider flex-grow`}>
+          <span className={`${pixelFontClass} text-white text-[11px] tracking-wider flex-grow`}>
             {shot.feature[lang]}
           </span>
           <button
@@ -225,6 +246,10 @@ export function ShowcaseModal({ title, groups, lang, onClose }: ShowcaseModalPro
         onClick={onClose}
       >
         <div
+          ref={desktopDialogRef}
+          role="dialog"
+          aria-modal="true"
+          aria-label={lang === "zh" ? `${title} 截图` : `${title} screenshots`}
           className="flex flex-row items-center gap-10 max-w-4xl max-h-[90vh] overflow-y-auto overflow-x-hidden overscroll-contain"
           onClick={(e) => e.stopPropagation()}
         >
@@ -237,7 +262,7 @@ export function ShowcaseModal({ title, groups, lang, onClose }: ShowcaseModalPro
       </div>
 
       {/* Mobile: full-screen takeover */}
-      <div className="md:hidden fixed inset-0 z-50 bg-background flex flex-col overflow-y-auto overscroll-contain">
+      <div ref={mobileDialogRef} role="dialog" aria-modal="true" aria-label={lang === "zh" ? `${title} 截图` : `${title} screenshots`} className="md:hidden fixed inset-0 z-50 bg-background flex flex-col overflow-y-auto overscroll-contain">
         <div className="flex items-center justify-between gap-3 px-4 pt-3 shrink-0">
           {tabsRow}
           <button

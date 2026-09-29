@@ -118,7 +118,7 @@ export function Portfolio({ lang }: PortfolioProps) {
             </PixelAssemble>
 
             <p
-              className={`${pixelFontClass} text-center text-muted-foreground mt-10 mb-4 ${lang === "zh" ? "text-sm" : "text-[9px]"}`}
+              className={`${pixelFontClass} text-center text-muted-foreground mt-10 mb-4 ${lang === "zh" ? "text-sm" : "text-[11px]"}`}
             >
               {t.insert}
             </p>
@@ -202,7 +202,7 @@ function Cartridge({
   const pixelFontClass =
     lang === "zh"
       ? "font-[family-name:var(--font-chinese)] text-sm"
-      : "font-[family-name:var(--font-pixel)] text-[8px]";
+      : "font-[family-name:var(--font-pixel)] text-[10px]";
 
   return (
     <button

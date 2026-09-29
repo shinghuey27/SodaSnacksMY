@@ -28,6 +28,9 @@ export function PixelAchievementToast({ toast }: PixelAchievementToastProps) {
 
   return (
     <div
+      role="status"
+      aria-live="polite"
+      aria-atomic="true"
       className="fixed bottom-8 right-6 z-[999] flex items-center gap-3 bg-foreground border-[3px] border-pixel-yellow shadow-[4px_4px_0_0_var(--pixel-yellow)] px-4 py-3 max-w-[280px]"
       style={{
         animation: visible
@@ -37,10 +40,10 @@ export function PixelAchievementToast({ toast }: PixelAchievementToastProps) {
     >
       <span className="text-2xl flex-shrink-0">{current.icon}</span>
       <div>
-        <p className="font-[family-name:var(--font-pixel)] text-[8px] text-pixel-yellow mb-1 leading-relaxed">
+        <p className="font-[family-name:var(--font-pixel)] text-[10px] text-pixel-yellow mb-1 leading-relaxed">
           {current.title}
         </p>
-        <p className="font-[family-name:var(--font-pixel)] text-[7px] text-white leading-relaxed">
+        <p className="text-xs text-white leading-relaxed">
           {current.body}
         </p>
       </div>
