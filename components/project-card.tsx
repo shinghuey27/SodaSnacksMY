@@ -8,10 +8,11 @@ interface ProjectCardProps {
   project: ProjectData;
   lang: Language;
   featured?: boolean;
+  onShowcase?: () => void;
 }
 
 // Enhanced pixel border with stepped corners and shadow
-function PixelBorder({
+export function PixelBorder({
   color,
   children,
   className = "",
@@ -135,6 +136,7 @@ export function ProjectCard({
   project,
   lang,
   featured = false,
+  onShowcase,
 }: ProjectCardProps) {
   const title = project.title[lang];
   const subtitle = project.subtitle?.[lang];
@@ -310,17 +312,21 @@ export function ProjectCard({
               </div> */}
 
               {/* CTA Button - LARGER */}
-              {/* <div className="mt-4 md:mt-5">
-                <button
-                  className={`${pixelFontClass} text-sm md:text-base px-4 md:px-5 py-2 cursor-pointer transition-all hover:translate-x-1`}
-                  style={{
-                    color: `var(--pixel-${project.accentColor})`,
-                    textShadow: "1px 1px 0 rgba(0,0,0,0.1)",
-                  }}
-                >
-                  {">>>"} {cta}
-                </button>
-              </div> */}
+              {project.showcase && onShowcase && (
+                <div className="mt-4 md:mt-5 animate-bounce-slow inline-block w-fit">
+                  <button
+                    type="button"
+                    onClick={onShowcase}
+                    className={`${pixelFontClass} text-sm md:text-base px-4 md:px-5 py-2 cursor-pointer transition-all hover:translate-x-1`}
+                    style={{
+                      color: `var(--pixel-${project.accentColor})`,
+                      textShadow: "1px 1px 0 rgba(0,0,0,0.1)",
+                    }}
+                  >
+                    {">>>"} {cta}
+                  </button>
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -437,14 +443,18 @@ export function ProjectCard({
           </div> */}
 
           {/* CTA */}
-          {/* <div className="mt-3 md:mt-4">
-            <span
-              className={`${pixelFontClass} text-[10px] md:text-xs cursor-pointer hover:translate-x-0.5 inline-block transition-transform`}
-              style={{ color: `var(--pixel-${project.accentColor})` }}
-            >
-              {">"} {cta}
-            </span>
-          </div> */}
+          {project.showcase && onShowcase && (
+            <div className="mt-3 md:mt-4 animate-bounce-slow inline-block w-fit">
+              <button
+                type="button"
+                onClick={onShowcase}
+                className={`${pixelFontClass} text-[10px] md:text-xs cursor-pointer hover:translate-x-0.5 inline-block transition-transform`}
+                style={{ color: `var(--pixel-${project.accentColor})` }}
+              >
+                {">"} {cta}
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </PixelBorder>

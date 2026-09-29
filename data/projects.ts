@@ -79,43 +79,167 @@ export const projects: ProjectData[] = [
     badge: "live",
   },
   {
-    id: "grocery-app",
+    id: "eatwhat-paywhat",
     title: {
-      en: "Grocery Mobile App",
-      zh: "杂货移动应用",
+      en: "EatWhat & PayWhat",
+      zh: "吃什么 & 花什么",
     },
     subtitle: {
-      en: "Mobile Application",
-      zh: "移动应用程序",
+      en: "Self-Hosted PWA Suite for Couples",
+      zh: "情侣生活自建 PWA 套件",
     },
     description: {
-      en: "A mobile application focused on grocery management and expense tracking, designed with simplicity and daily usability in mind.",
-      zh: "一款专注于杂货管理和费用追踪的移动应用，设计简洁，注重日常实用性。",
+      en: "A pair of self-hosted PWAs sharing one backend: EatWhat is a couples' recipe app with room-based real-time sync and Google login, while PayWhat tracks shared expenses, recurring bills, and receipt-based splits on the same account.",
+      zh: "一对共用后端的自建 PWA：EatWhat 是情侣共享食谱与决定今天吃什么的应用，支持房间实时同步与 Google 登录；PayWhat 则在同一账号下管理共同开销、固定账单与收据拆分。",
     },
     highlights: {
       en: [
-        "Mobile-first user experience",
-        "Clean and intuitive interface",
-        "Designed for practical everyday use",
+        "Room-based real-time sync across devices",
+        "Google login shared across both apps",
+        "AI-assisted recipe parsing (Gemini) and receipt OCR",
+        "Installable offline-first PWA with Web Push",
+        "Self-hosted Express + PostgreSQL backend",
       ],
       zh: [
-        "移动优先的用户体验",
-        "简洁直观的界面",
-        "专为日常实用设计",
+        "跨设备的房间级实时同步",
+        "两个应用共用 Google 登录",
+        "AI 辅助食谱解析（Gemini）与收据 OCR 识别",
+        "可安装、离线优先的 PWA，支持 Web Push",
+        "自建 Express + PostgreSQL 后端",
       ],
     },
-    tech: ["React Native"],
+    tech: ["React", "TypeScript", "Vite", "Express", "PostgreSQL", "Firebase Auth", "Gemini API"],
     status: {
-      en: "Currently paused, open for further development",
-      zh: "目前暂停，可继续开发",
+      en: "Live, in daily use",
+      zh: "已上线，日常使用中",
     },
     cta: {
-      en: "Preview available",
-      zh: "可预览",
+      en: "View screenshots",
+      zh: "查看截图",
     },
-    image: "/images/project-grocery.png",
+    image: "/images/project-eatwhat.png",
     accentColor: "yellow",
-    badge: "paused",
+    badge: "live",
+    showcase: [
+      {
+        id: "eat",
+        label: { en: "EatWhat", zh: "EatWhat" },
+        accentColor: "red",
+        shots: [
+          {
+            image: "/images/eatwhat-shots/eat-1-login.jpg",
+            feature: { en: "GOOGLE LOGIN", zh: "GOOGLE 登录" },
+            caption: {
+              en: "One tap in. You're already home.",
+              zh: "一键登录，秒入你们的专属空间。",
+            },
+          },
+          {
+            image: "/images/eatwhat-shots/eat-2-recipes.jpg",
+            feature: { en: "RECIPE LIBRARY", zh: "食谱库" },
+            caption: {
+              en: "Every recipe you both love, in one place.",
+              zh: "你俩喜欢的菜谱，都在这一个库里。",
+            },
+          },
+          {
+            image: "/images/eatwhat-shots/eat-3-ai-parse.jpg",
+            feature: { en: "AI RECIPE IMPORT", zh: "AI 食谱导入" },
+            caption: {
+              en: "Paste a recipe or video link to start importing.",
+              zh: "粘贴食谱文字或视频链接，开始导入。",
+            },
+          },
+          {
+            image: "/images/eatwhat-shots/eat-4-whattoeat.jpg",
+            feature: { en: "WHAT TO EAT", zh: "今天吃什么" },
+            caption: {
+              en: "Can't decide? Let the app pick.",
+              zh: "今天吃什么？不用吵了，交给它。",
+            },
+          },
+          {
+            image: "/images/eatwhat-shots/eat-5-orders.jpg",
+            feature: { en: "TODAY'S ORDERS", zh: "今日点单" },
+            caption: {
+              en: "See tonight's dishes and who ordered them.",
+              zh: "看看今晚点了什么、是谁点的。",
+            },
+          },
+          {
+            image: "/images/eatwhat-shots/eat-6-messages.jpg",
+            feature: { en: "SHARED MESSAGES", zh: "共享留言" },
+            caption: {
+              en: "Leave a note while planning dinner together.",
+              zh: "一起安排晚餐时，随手留句话。",
+            },
+          },
+        ],
+      },
+      {
+        id: "pay",
+        label: { en: "PayWhat", zh: "PayWhat" },
+        accentColor: "green",
+        shots: [
+          {
+            image: "/images/eatwhat-shots/pay-1-login.jpg",
+            feature: { en: "SHARED LOGIN", zh: "共用登录" },
+            caption: {
+              en: "Same login. Zero extra setup.",
+              zh: "同一个账号，不用重新注册。",
+            },
+          },
+          {
+            image: "/images/eatwhat-shots/pay-2-expenses.jpg",
+            feature: { en: "EXPENSE LIST", zh: "支出列表" },
+            caption: {
+              en: "See where every dollar went.",
+              zh: "钱花哪了，一眼就清楚。",
+            },
+          },
+          {
+            image: "/images/eatwhat-shots/pay-3-overview.jpg",
+            feature: { en: "MONTHLY OVERVIEW", zh: "每月概览" },
+            caption: {
+              en: "See spending, bills and remaining budget together.",
+              zh: "支出、账单与剩余预算，一页看清。",
+            },
+          },
+          {
+            image: "/images/eatwhat-shots/pay-4-bills.jpg",
+            feature: { en: "RECURRING BILLS", zh: "固定账单" },
+            caption: {
+              en: "Never forget a bill again.",
+              zh: "账单再也不会漏掉。",
+            },
+          },
+          {
+            image: "/images/eatwhat-shots/pay-5-split.jpg",
+            feature: { en: "SHARED EXPENSES", zh: "共同开销" },
+            caption: {
+              en: "Track who paid and each person's share.",
+              zh: "谁付了钱、各自分担多少，一目了然。",
+            },
+          },
+          {
+            image: "/images/eatwhat-shots/pay-6-report.jpg",
+            feature: { en: "SPLIT REPORT", zh: "分账报告" },
+            caption: {
+              en: "Explore group spending by category.",
+              zh: "按类别查看群组的消费。",
+            },
+          },
+          {
+            image: "/images/eatwhat-shots/pay-7-notifications.jpg",
+            feature: { en: "IN-APP UPDATES", zh: "应用内通知" },
+            caption: {
+              en: "Review expense and bill updates in one inbox.",
+              zh: "在通知列表查看开销与账单动态。",
+            },
+          },
+        ],
+      },
+    ],
   },
   {
     id: "erpnext-custom",

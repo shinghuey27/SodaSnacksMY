@@ -35,6 +35,30 @@ export interface ProjectData {
   featured?: boolean
   /** pixel HUD status chip on the card */
   badge?: "live" | "paused"
+  /** optional handheld-style screenshot showcase, grouped by sub-app */
+  showcase?: ShowcaseGroup[]
+}
+
+export interface ShowcaseShot {
+  image: string
+  feature: {
+    en: string
+    zh: string
+  }
+  caption: {
+    en: string
+    zh: string
+  }
+}
+
+export interface ShowcaseGroup {
+  id: string
+  label: {
+    en: string
+    zh: string
+  }
+  accentColor: "red" | "yellow" | "green" | "blue"
+  shots: ShowcaseShot[]
 }
 
 export interface ServiceData {

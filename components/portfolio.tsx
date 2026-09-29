@@ -6,6 +6,7 @@ import useEmblaCarousel from "embla-carousel-react";
 import { Language, ProjectData } from "@/types/portfolio";
 import { projects } from "@/data/projects";
 import { ProjectCard } from "./project-card";
+import { ShowcaseModal } from "./showcase-modal";
 import { PixelSprite } from "./pixel-sprite";
 import { MASCOT_S } from "./sprites/mascot-data";
 import { PixelAssemble } from "./pixel-assemble";
@@ -37,6 +38,7 @@ export function Portfolio({ lang }: PortfolioProps) {
   ];
   const [selectedId, setSelectedId] = useState(featuredProject.id);
   const selected = ordered.find((p) => p.id === selectedId) ?? featuredProject;
+  const [showcaseProject, setShowcaseProject] = useState<ProjectData | null>(null);
   const { ref: gridRef, inView } = useInView<HTMLDivElement>();
 
   // Use Chinese pixel font for Chinese text
@@ -104,7 +106,14 @@ export function Portfolio({ lang }: PortfolioProps) {
                 key={selected.id}
                 style={{ animation: "px-cartridge-in 0.3s ease-out" }}
               >
-                <ProjectCard project={selected} lang={lang} featured />
+                <ProjectCard
+                  project={selected}
+                  lang={lang}
+                  featured
+                  onShowcase={
+                    selected.showcase ? () => setShowcaseProject(selected) : undefined
+                  }
+                />
               </div>
             </PixelAssemble>
 
@@ -138,9 +147,22 @@ export function Portfolio({ lang }: PortfolioProps) {
 
         {/* ── Mobile: swipeable carousel ── */}
         <MobileCarouselReveal>
-          <MobileCarousel projects={ordered} lang={lang} />
+          <MobileCarousel
+            projects={ordered}
+            lang={lang}
+            onShowcase={setShowcaseProject}
+          />
         </MobileCarouselReveal>
       </div>
+
+      {showcaseProject && showcaseProject.showcase && (
+        <ShowcaseModal
+          title={showcaseProject.title[lang]}
+          groups={showcaseProject.showcase}
+          lang={lang}
+          onClose={() => setShowcaseProject(null)}
+        />
+      )}
 
       <div
         className="absolute bottom-0 left-0 right-0 h-32 pointer-events-none"
@@ -234,9 +256,11 @@ function Cartridge({
 function MobileCarousel({
   projects: items,
   lang,
+  onShowcase,
 }: {
   projects: ProjectData[];
   lang: Language;
+  onShowcase: (project: ProjectData) => void;
 }) {
   const [emblaRef, emblaApi] = useEmblaCarousel({ align: "center" });
   const [slideIdx, setSlideIdx] = useState(0);
@@ -260,7 +284,13 @@ function MobileCarousel({
               className="min-w-0 flex-[0_0_86%] pl-4 first:pl-2"
             >
               <div className="h-full pb-2 pr-2">
-                <ProjectCard project={project} lang={lang} />
+                <ProjectCard
+                  project={project}
+                  lang={lang}
+                  onShowcase={
+                    project.showcase ? () => onShowcase(project) : undefined
+                  }
+                />
               </div>
             </div>
           ))}
