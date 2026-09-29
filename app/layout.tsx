@@ -52,6 +52,11 @@ export const metadata: Metadata = {
     title,
     description,
   },
+  manifest: '/manifest.json',
+  icons: {
+    icon: '/icon.png',
+    apple: '/apple-icon.png',
+  },
 }
 
 const jsonLd = {
@@ -59,7 +64,7 @@ const jsonLd = {
   '@type': 'Organization',
   name: 'SodaSnacks',
   url: siteUrl,
-  logo: `${siteUrl}/pixel-logo.png`,
+  logo: `${siteUrl}/brand/logo-lockup.png`,
   description,
   email: 'iwantsodasnacks@gmail.com',
   telephone: '+601137652814',

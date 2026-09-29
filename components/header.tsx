@@ -45,15 +45,19 @@ export function Header({ lang, setLang }: HeaderProps) {
           className="flex items-center gap-3 group"
         >
           <img
-            src="/pixel-logo.png"
+            src="/brand/logo-mark.webp"
             alt=""
             width={40}
             height={40}
             className="w-10 h-10 group-hover:scale-110 transition-transform duration-200"
           />
-          <span className="font-[family-name:var(--font-pixel)] text-xs tracking-tight text-foreground select-none">
-            SodaSnacks
-          </span>
+          <img
+            src="/brand/logo-wordmark.webp"
+            alt="SodaSnacks"
+            width={140}
+            height={47}
+            className="w-28 md:w-36 h-auto select-none"
+          />
         </a>
 
         {/* Desktop Navigation */}

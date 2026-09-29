@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useReducedMotion } from "@/lib/use-reduced-motion";
 import type { PixelFrame, SpriteDef } from "./sprites/sprite-types";
 
 export interface PixelRect {
@@ -60,21 +61,54 @@ export function PixelSprite({
   className,
   flipX = false,
 }: PixelSpriteProps) {
-  const frames = sprite.frames[anim] ?? sprite.frames.idle;
+  const frames = sprite.artwork
+    ? anim === "walk" && sprite.artwork.walk
+      ? sprite.artwork.walk.sequence
+      : sprite.artwork.sequences[anim] ?? sprite.artwork.sequences.idle
+    : sprite.frames[anim] ?? sprite.frames.idle;
+  const reduced = useReducedMotion();
   const [autoFrame, setAutoFrame] = useState(0);
 
   useEffect(() => {
-    if (frame !== undefined || !fps || frames.length < 2) return;
+    if (reduced || frame !== undefined || !fps || frames.length < 2) return;
     setAutoFrame(0);
     const id = setInterval(
       () => setAutoFrame((f) => (f + 1) % frames.length),
       1000 / fps,
     );
     return () => clearInterval(id);
-  }, [frame, fps, frames]);
+  }, [frame, fps, frames, reduced]);
 
-  const idx = frame !== undefined ? frame % frames.length : autoFrame % frames.length;
-  const rects = frameToRects(frames[idx], sprite.palette);
+  const idx = reduced ? 0 : frame !== undefined ? frame % frames.length : autoFrame % frames.length;
+  const rects = sprite.artwork ? [] : frameToRects(frames[idx] as PixelFrame, sprite.palette);
+
+  if (sprite.artwork) {
+    const useWalkSheet = anim === "walk" && sprite.artwork.walk;
+    const { src, frameWidth, frameHeight } = useWalkSheet || sprite.artwork;
+    const pose = frames[idx] as number;
+    const x = (pose % 2) * frameWidth;
+    const y = Math.floor(pose / 2) * frameHeight;
+    return (
+      <svg
+        viewBox={`${x} ${y} ${frameWidth} ${frameHeight}`}
+        className={className}
+        style={{
+          imageRendering: "pixelated",
+          transform: useWalkSheet && flipX ? "scaleX(-1)" : undefined,
+        }}
+        aria-hidden="true"
+      >
+        <image
+          href={src}
+          x={0}
+          y={0}
+          width={frameWidth * 2}
+          height={frameHeight * 2}
+          style={{ imageRendering: "pixelated" }}
+        />
+      </svg>
+    );
+  }
 
   return (
     <svg

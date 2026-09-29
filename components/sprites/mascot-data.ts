@@ -1,168 +1,194 @@
-// S & K mascot sprites (16×24), redrawn in pixel art from the founders'
-// hand-drawn characters. Pure data — no React imports (reusable for a
-// future voxel version).
-
+// One pixel grid and palette system for every S/K appearance on the site.
 import type { PixelFrame, SpriteDef } from "./sprite-types";
 
-function withRows(base: PixelFrame, overrides: Record<number, string>): PixelFrame {
-  const out = base.slice();
-  for (const [i, row] of Object.entries(overrides)) out[Number(i)] = row;
-  return out;
-}
+type Character = "S" | "K";
+type Pose = "idle" | "stepA" | "stepB" | "wave" | "jump";
+const WIDTH = 28;
+const HEIGHT = 40;
 
-/* ── S: girl with brown pigtails, blue overalls, green sneakers ── */
-
-const S_BASE: PixelFrame = [
-  "....hhhhhhhh....",
-  "..hhhhhhhhhhhh..",
-  ".hhhhhhhhhhhhhh.",
-  "hhhhhhhhhhhhhhhh",
-  "hhhhffffffffhhhh",
-  "hh.hfkffffkfh.hh",
-  "hh.hcffffffch.hh",
-  "...hfffkkfffh...",
-  "....ffffffff....",
-  "...ssssssssss...",
-  "..ssbssssssbss..",
-  "..ssbbwwwbbbss..",
-  "..ssbbwbbbbbss..",
-  "..ssbbwwwbbbss..",
-  "..ffbbbbwbbbff..",
-  "....bbwwwbbb....",
-  "....bbbbbbbb....",
-  "....bbb..bbb....",
-  "....bbb..bbb....",
-  "....bbb..bbb....",
-  "....bbb..bbb....",
-  "...ggg....ggg...",
-  "...ggg....ggg...",
-  "..wwww....wwww..",
-];
-
-const S_BLINK = withRows(S_BASE, {
-  5: "hh.hffffffffh.hh",
-  6: "hh.hckffffkch.hh",
-});
-
-const S_WALK_A = withRows(S_BASE, {
-  21: "..ggg....ggg....",
-  22: "..ggg....ggg....",
-  23: ".wwww....wwww...",
-});
-
-const S_WALK_B = withRows(S_BASE, {
-  21: "....ggg....ggg..",
-  22: "....ggg....ggg..",
-  23: "...wwww....wwww.",
-});
-
-const S_WAVE_A = withRows(S_BASE, {
-  10: "..ssbssssssbsff.",
-});
-
-const S_WAVE_B = withRows(S_BASE, {
-  9: "...ssssssssssff.",
-});
-
-const S_JUMP = withRows(S_BASE, {
-  9: "..ffssssssssff..",
-});
-
-export const MASCOT_S: SpriteDef = {
-  width: 16,
-  height: 24,
-  palette: {
-    h: "#8b5a3c", // pigtail brown
-    f: "#f9c97e", // skin
-    k: "#3a3a38", // eyes / mouth
-    c: "#f9a8c9", // cheeks
-    s: "#55554e", // shirt
-    b: "#3a86ff", // overalls
-    w: "#ffffff", // "S" + soles
-    g: "#4caf50", // sneakers
-  },
-  frames: {
-    idle: [S_BASE, S_BASE, S_BASE, S_BLINK],
-    walk: [S_WALK_A, S_WALK_B],
-    wave: [S_WAVE_A, S_WAVE_B],
-    jump: [S_JUMP],
-  },
+const sharedPalette = {
+  o: "#29201f", f: "#ffe1b6", e: "#211d1d", c: "#e99d8c",
+  w: "#fff9ec", t: "#38343a", T: "#514b50",
+  h: "#70432f", H: "#8c5b3e", a: "#e994a6",
+  b: "#326c9b", B: "#4b85b3", p: "#244766",
+  s: "#28674b", S: "#3a8460",
 };
 
-/* ── K: boy with dark red hair, red overalls, black sneakers ── */
+function drawCharacter(kind: Character, pose: Pose, blinking = false): PixelFrame {
+  const grid = Array.from({ length: HEIGHT }, () => Array<string>(WIDTH).fill("."));
+  const dot = (x: number, y: number, color: string) => {
+    if (x >= 0 && x < WIDTH && y >= 0 && y < HEIGHT) grid[y][x] = color;
+  };
+  const box = (x: number, y: number, w: number, h: number, color: string) => {
+    for (let yy = y; yy < y + h; yy++)
+      for (let xx = x; xx < x + w; xx++) dot(xx, yy, color);
+  };
+  const pattern = (x: number, y: number, rows: string[], color: string) => {
+    rows.forEach((row, yy) => [...row].forEach((cell, xx) => {
+      if (cell === "#") dot(x + xx, y + yy, color);
+    }));
+  };
 
-const K_BASE: PixelFrame = [
-  "....hhhhhhhh....",
-  "..hhhhhhhhhhhh..",
-  ".hhhhhhhhhhhhhh.",
-  ".hhhhhhhhhhhhhh.",
-  ".hhhffffffffhh..",
-  "..hhfkffffkfhh..",
-  "..hhcffffffchh..",
-  "...hfffkkfffh...",
-  "....ffffffff....",
-  "...ssssssssss...",
-  "..ssrssssssrss..",
-  "..ssrkwkwkkrss..",
-  "..ssrkwwkkkrss..",
-  "..ssrkwkkkkrss..",
-  "..ffrkwwkkkrff..",
-  "....rkwkwkkr....",
-  "....rrrrrrrr....",
-  "....rrr..rrr....",
-  "....rrr..rrr....",
-  "....rrr..rrr....",
-  "....rrr..rrr....",
-  "...kkk....kkk...",
-  "...kkk....kkk...",
-  "..wwww....wwww..",
-];
+  const leftStep = pose === "stepA" ? -2 : pose === "stepB" ? 1 : 0;
+  const rightStep = pose === "stepB" ? 2 : pose === "stepA" ? -1 : 0;
+  const lift = pose === "jump" ? -2 : 0;
+  for (const [x, step] of [[9, leftStep], [16, rightStep]] as const) {
+    box(x + step - 1, 29 + lift, 6, 8, "o");
+    box(x + step, 29 + lift, 4, 6, "b");
+    box(x + step, 35 + lift, 4, 1, "B");
+    box(x + step - 1, 37 + lift, 7, 3, "o");
+    box(x + step, 37 + lift, 5, 2, "s");
+    box(x + step + 1, 37 + lift, 2, 1, "S");
+    box(x + step + 4, 38 + lift, 2, 1, "w");
+    box(x + step, 39 + lift, 6, 1, "w");
+  }
 
-const K_BLINK = withRows(K_BASE, {
-  5: "..hhffffffffhh..",
-  6: "..hhckffffkchh..",
-});
+  // A visible neck and level shoulders keep the posture upright.
+  box(11, 18, 6, 3, "o");
+  box(12, 18, 4, 2, "f");
+  box(7, 20, 14, 12, "o");
+  box(8, 21, 12, 10, "t");
+  box(5, 21, 4, 10, "o");
+  box(6, 22, 2, 8, "t");
+  box(6, 23, 1, 5, "T");
+  if (pose === "wave") {
+    box(20, 16, 4, 9, "o");
+    box(21, 17, 2, 6, "t");
+    box(20, 14, 5, 4, "o");
+    box(21, 14, 3, 3, "f");
+  } else {
+    box(19, 21, 4, 10, "o");
+    box(20, 22, 2, 8, "t");
+    box(21, 23, 1, 5, "T");
+    box(20, 30, 3, 3, "o");
+    box(20, 30, 2, 2, "f");
+  }
+  box(5, 30, 3, 3, "o");
+  box(6, 30, 2, 2, "f");
 
-const K_WALK_A = withRows(K_BASE, {
-  21: "..kkk....kkk....",
-  22: "..kkk....kkk....",
-  23: ".wwww....wwww...",
-});
+  // Bib, straps, buttons and the S/K chest badge.
+  box(8, 22, 12, 11, "o");
+  box(9, 23, 10, 9, "b");
+  box(9, 21, 2, 6, "B");
+  box(17, 21, 2, 6, "B");
+  dot(10, 25, "o");
+  dot(17, 25, "o");
+  box(11, 26, 6, 5, "o");
+  box(12, 27, 4, 3, "p");
+  pattern(12, 26, kind === "S"
+    ? [".###", "##..", ".##.", "..##", "###."]
+    : ["#..#", "#.#.", "##..", "#.#.", "#..#"], "w");
 
-const K_WALK_B = withRows(K_BASE, {
-  21: "....kkk....kkk..",
-  22: "....kkk....kkk..",
-  23: "...wwww....wwww.",
-});
+  if (kind === "S") {
+    // Hair sits behind the face, with two distinct outward pigtails.
+    box(5, 4, 18, 12, "o");
+    box(6, 5, 16, 10, "h");
+    box(2, 9, 4, 7, "o");
+    box(3, 10, 2, 5, "h");
+    box(3, 15, 2, 2, "o");
+    dot(3, 15, "h");
+    box(22, 9, 4, 7, "o");
+    box(23, 10, 2, 5, "h");
+    box(23, 15, 2, 2, "o");
+    dot(24, 15, "h");
+    box(4, 9, 3, 2, "a");
+    box(21, 9, 3, 2, "a");
+  } else {
+    box(5, 4, 18, 12, "o");
+    box(6, 5, 16, 10, "h");
+  }
 
-const K_WAVE_A = withRows(K_BASE, {
-  10: "..ssrssssssrsff.",
-});
+  // Keep ears small: the broad ears in the first draft changed their faces.
+  box(7, 7, 14, 11, "o");
+  box(8, 8, 12, 9, "f");
+  box(6, 11, 2, 3, "o");
+  dot(7, 12, "f");
+  box(20, 11, 2, 3, "o");
+  dot(20, 12, "f");
+  box(10, 17, 8, 2, "o");
+  box(11, 17, 6, 1, "f");
 
-const K_WAVE_B = withRows(K_BASE, {
-  9: "...ssssssssssff.",
-});
+  box(6, 3, 16, 6, "o");
+  box(8, 2, kind === "S" ? 12 : 13, kind === "S" ? 2 : 3, "o");
+  if (kind === "S") {
+    box(7, 4, 14, 4, "h");
+    box(9, 3, 9, 2, "H");
+    box(7, 8, 2, 4, "h");
+    box(19, 8, 2, 4, "h");
+    box(9, 7, 3, 2, "h");
+    box(15, 7, 3, 2, "h");
+    dot(11, 7, "H");
+  } else {
+    box(10, 1, 3, 2, "o");
+    box(19, 2, 3, 2, "o");
+    box(7, 4, 14, 4, "h");
+    box(9, 3, 10, 3, "H");
+    box(7, 8, 2, 4, "h");
+    box(19, 8, 2, 4, "h");
+    pattern(9, 7, ["##...##..##", "#....#....#"], "h");
+  }
 
-const K_JUMP = withRows(K_BASE, {
-  9: "..ffssssssssff..",
-});
+  box(8, 13, 2, 2, "c");
+  box(18, 13, 2, 2, "c");
+  if (blinking) {
+    box(10, 11, 2, 1, "e");
+    box(16, 11, 2, 1, "e");
+  } else {
+    box(10, 10, 2, 2, "e");
+    box(16, 10, 2, 2, "e");
+  }
+  dot(14, 13, "e");
+  box(12, 15, 4, 1, "e");
+  dot(11, 14, "e");
+  dot(16, 14, "e");
+  return grid.map((row) => row.join(""));
+}
 
-export const MASCOT_K: SpriteDef = {
-  width: 16,
-  height: 24,
-  palette: {
-    h: "#7a2e2e", // dark red-brown hair
-    f: "#f9c97e", // skin
-    k: "#2e2e2c", // eyes / "K" pocket / sneakers
-    c: "#f4a58a", // cheeks
-    s: "#55554e", // shirt
-    r: "#e63946", // overalls
-    w: "#ffffff", // "K" + soles
+function makeMascot(kind: Character): SpriteDef {
+  return {
+    width: WIDTH,
+    height: HEIGHT,
+    palette: kind === "S" ? sharedPalette : {
+      ...sharedPalette,
+      h: "#71251e", H: "#8d3126",
+      b: "#c8222b", B: "#e0373d", p: "#262126",
+      s: "#242329", S: "#46434a",
+    },
+    frames: {
+      idle: [drawCharacter(kind, "idle"), drawCharacter(kind, "idle"), drawCharacter(kind, "idle"), drawCharacter(kind, "idle", true)],
+      walk: [drawCharacter(kind, "stepA"), drawCharacter(kind, "stepB")],
+      wave: [drawCharacter(kind, "idle"), drawCharacter(kind, "wave")],
+      jump: [drawCharacter(kind, "jump")],
+    },
+  };
+}
+
+export const MASCOT_S = makeMascot("S");
+export const MASCOT_K = makeMascot("K");
+
+// Every animation frame is a complete character illustration.
+// The grid frames remain available as a lightweight fallback.
+MASCOT_S.artwork = {
+  src: "/mascots/s-animations.png",
+  frameWidth: 530,
+  frameHeight: 742,
+  sequences: { idle: [0], wave: [0, 3], greet: [0, 0, 0, 3, 3, 0], jump: [0] },
+  walk: {
+    src: "/mascots/s-walk.png",
+    frameWidth: 596,
+    frameHeight: 660,
+    sequence: [0, 1, 2, 3],
   },
-  frames: {
-    idle: [K_BASE, K_BASE, K_BASE, K_BLINK],
-    walk: [K_WALK_A, K_WALK_B],
-    wave: [K_WAVE_A, K_WAVE_B],
-    jump: [K_JUMP],
+};
+MASCOT_K.artwork = {
+  src: "/mascots/k-animations.png",
+  frameWidth: 530,
+  frameHeight: 742,
+  sequences: { idle: [0], wave: [0, 3], greet: [0, 0, 0, 3, 3, 0], jump: [0] },
+  walk: {
+    src: "/mascots/k-walk.png",
+    frameWidth: 595.5,
+    frameHeight: 660,
+    sequence: [0, 1, 2, 3],
   },
 };

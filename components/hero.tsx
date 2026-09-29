@@ -60,17 +60,11 @@ export function Hero({ lang }: HeroProps) {
             <div className="relative flex justify-center lg:justify-start mb-8 px-step-in">
               <div className="relative group">
                 <img
-                  src="/pixel-logo.png"
+                  src="/brand/logo-console.webp"
                   alt=""
                   width={112}
                   height={112}
-                  className="w-20 h-20 md:w-28 md:h-28 
-                 drop-shadow-[0_0_15px_#7EB8FF] 
-                 drop-shadow-[0_0_25px_#4D96FF]
-                 transition-all duration-700 
-                 group-hover:scale-110 
-                 group-hover:drop-shadow-[0_0_40px_#7EB8FF]
-                 animate-neon-pulse"
+                  className="w-20 h-20 md:w-28 md:h-28 object-contain drop-shadow-[0_6px_0_#07143D] transition-transform duration-200 group-hover:scale-105"
                 />
               </div>
             </div>

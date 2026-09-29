@@ -116,7 +116,7 @@ export default function PrivacyPage() {
             </p>
           </div>
           <img
-            src="/pixel-logo.png"
+            src="/brand/logo-console.webp"
             alt="SodaSnacks"
             width={144}
             height={144}

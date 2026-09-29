@@ -24,7 +24,7 @@ export function Footer({ lang }: FooterProps) {
       <div className="container mx-auto px-4">
         <div className="flex flex-col items-center gap-6">
           <img
-            src="/pixel-logo.png"
+            src="/brand/logo-mark.webp"
             alt=""
             width={48}
             height={48}

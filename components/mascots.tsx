@@ -55,7 +55,7 @@ export function Mascots({ lang }: MascotsProps) {
 
   return (
     <>
-      <div className="absolute bottom-0 inset-x-0 h-14 md:h-16 z-10 pointer-events-none">
+      <div className="absolute bottom-0 inset-x-0 h-14 md:h-16 z-20 pointer-events-none">
         <Mascot
           sprite={MASCOT_S}
           hint={t.hint}
